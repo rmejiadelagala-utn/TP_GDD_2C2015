@@ -1,5 +1,7 @@
 /*---------------------CREACIÖN DEL ESQUEMA----------------*/
 
+--Buscar los comentarios de consulta cono -->  <DUDAS>
+
 --Indico DB a utilizar
 USE GD2C2015
 --Si no existe el esquema, entonces, lo creo
@@ -8,11 +10,12 @@ BEGIN
 	EXEC ('CREATE SCHEMA SFX AUTHORIZATION gd')
 END
 
+
 /*---------------------ELIMINACIÓN DE TABLAS---------------------*/
 IF OBJECT_ID('SFX.t_butacas_viaje') IS NOT NULL
 DROP TABLE SFX.t_butacas_viaje 
-IF OBJECT_ID('SFX.t_detalle_compras') IS NOT NULL
-DROP TABLE SFX.t_detalle_compras
+--IF OBJECT_ID('SFX.t_detalle_compras') IS NOT NULL --<DUDAS> Despues de consultar con el profesor no seria necesaria esta tabla.
+--DROP TABLE SFX.t_detalle_compras
 IF OBJECT_ID('SFX.t_pasajes') IS NOT NULL
 DROP TABLE SFX.t_pasajes
 IF OBJECT_ID('SFX.t_paquetes') IS NOT NULL
@@ -23,14 +26,12 @@ IF OBJECT_ID('SFX.t_compras') IS NOT NULL
 DROP TABLE SFX.t_compras
 IF OBJECT_ID('SFX.t_formas_pago') IS NOT NULL
 DROP TABLE SFX.t_formas_pago
-IF OBJECT_ID('SFX.t_tarjetas') IS NOT NULL
+IF OBJECT_ID('SFX.t_tarjetas') IS NOT NULL	--<DUDAS> Despues de consultar con el profesor no seria necesaria esta tabla.
 DROP TABLE SFX.t_tarjetas
-IF OBJECT_ID('SFX.t_tipo_tarjetas') IS NOT NULL
+IF OBJECT_ID('SFX.t_tipo_tarjetas') IS NOT NULL	--<DUDAS> Despues de consultar con el profesor no seria necesaria esta tabla.
 DROP TABLE SFX.t_tipo_tarjetas
 IF OBJECT_ID('SFX.t_clientes') IS NOT NULL
 DROP TABLE SFX.t_clientes
-IF OBJECT_ID('SFX.t_aeropuertos') IS NOT NULL
-DROP TABLE SFX.t_aeropuertos
 IF OBJECT_ID('SFX.t_butacas') IS NOT NULL
 DROP TABLE SFX.t_butacas 
 IF OBJECT_ID('SFX.t_viajes') IS NOT NULL
@@ -41,11 +42,13 @@ IF OBJECT_ID('SFX.t_rutas') IS NOT NULL
 DROP TABLE SFX.t_rutas
 IF OBJECT_ID('SFX.t_tipo_butacas') IS NOT NULL
 DROP TABLE SFX.t_tipo_butacas
+IF OBJECT_ID('SFX.t_aeropuertos') IS NOT NULL 
+DROP TABLE SFX.t_aeropuertos
 IF OBJECT_ID('SFX.t_ciudades') IS NOT NULL
 DROP TABLE SFX.t_ciudades
 IF OBJECT_ID('SFX.t_servicios') IS NOT NULL
 DROP TABLE SFX.t_servicios
-IF OBJECT_ID('SFX.t_modelos') IS NOT NULL
+IF OBJECT_ID('SFX.t_modelos') IS NOT NULL	--<DUDAS> Despues de consultar con el profesor no seria necesaria esta tabla.
 DROP TABLE SFX.t_modelos
 IF OBJECT_ID('SFX.t_fabricantes') IS NOT NULL
 DROP TABLE SFX.t_fabricantes
@@ -55,12 +58,19 @@ IF OBJECT_ID('SFX.t_rol_usuario') IS NOT NULL
 DROP TABLE SFX.t_rol_usuario
 IF OBJECT_ID('SFX.t_roles') IS NOT NULL
 DROP TABLE SFX.t_roles
-IF OBJECT_ID('SFX.t_login_itentos') IS NOT NULL
-DROP TABLE SFX.t_login_itentos
+IF OBJECT_ID('SFX.t_login_intentos') IS NOT NULL
+DROP TABLE SFX.t_login_intentos
 IF OBJECT_ID('SFX.t_usuarios') IS NOT NULL
 DROP TABLE SFX.t_usuarios
 IF OBJECT_ID('SFX.t_funcionalidades') IS NOT NULL
 DROP TABLE SFX.t_funcionalidades
+IF OBJECT_ID('SFX.t_premios') IS NOT NULL
+DROP TABLE SFX.t_premios
+IF OBJECT_ID('SFX.t_canjes') IS NOT NULL
+DROP TABLE SFX.t_canjes
+IF OBJECT_ID('SFX.t_millas_cliente') IS NOT NULL
+DROP TABLE SFX.t_millas_cliente
+
 
 
 /*---------------------ELIMINACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
@@ -77,7 +87,8 @@ CREATE TABLE SFX.t_clientes (
 	Cli_Mail			nvarchar(255) NULL,
 	Cli_Fecha_Nac		datetime NULL,
 	Cli_Usu_Id			int
-)
+	--cli_millas		int					--<DUDAS> Independientemente que existe la tabla con el detalle de las millas 
+)                                           --al momento de restar dichos puntos este campo soluciona ese casos de uso
 --Creación tabla "Pasajes"
 CREATE TABLE SFX.t_pasajes (
 	Pas_Codigo			numeric(18,0) NOT NULL,
@@ -85,7 +96,8 @@ CREATE TABLE SFX.t_pasajes (
 	Pas_FechaCompra		datetime NULL,
 	Pas_Estado			nvarchar(255),
 	Pas_But_ID			int,
-	Pas_Cli_ID			int	
+	Pas_Cli_ID			int,
+	Pas_com_id			int	
 )
 --Creación tabla "Paquetes"
 CREATE TABLE SFX.t_paquetes (
@@ -93,8 +105,9 @@ CREATE TABLE SFX.t_paquetes (
 	Paq_Precio			numeric(18,2) NULL,
 	Paq_KG				numeric(18,0) NULL,
 	Paq_FechaCompra		datetime NULL,
-	Paq_Via_ID			int,
-	Paq_Cli_ID			int
+	Paq_Via_ID			int, --<DUDAS> El viaje ya lo tiene al estar asociado con la compra.
+	Paq_Cli_ID			int,
+	Paq_com_id			int
 )
 --Creación tabla "Rutas"
 CREATE TABLE SFX.t_rutas (
@@ -150,7 +163,7 @@ CREATE TABLE SFX.t_viajes (
 	Via_Fecha_Llegada_Estimada	datetime,
 	Via_Aep_ID_Procedencia		int,
 	Via_Aep_ID_Arribo			int,
-	Via_Fecha_Llegada_Destino	datetime
+	Via_Fecha_Llegada_Destino	datetime --<DUDAS> Esta fecha no seria la Via_Fecha_Llegada? o en que se diferencia.
 )
 --Creación tabla "Tipo Butacas"
 CREATE TABLE SFX.t_tipo_butacas (
@@ -171,8 +184,8 @@ CREATE TABLE SFX.t_butacas_viaje (
 	Buv_Via_ID					int,
 	Buv_But_ID					int,
 	Buv_Cli_ID					int,
-	Buv_Fecha_Baja				datetime
-)
+	Buv_Fecha_Baja				datetime	--<DUDAS> Esta fecha es para marcar cuando el viaje se realizó? Por cada viaje esta butaca apareceria, ver si hace falta bajarla.
+)											--Podriamos agrear una fecha de alta para el registro. La cancelacion queda registrada en otra parte del modelo.
 --Creación tabla "Fabricantes"
 CREATE TABLE SFX.t_fabricantes (
 	Fab_ID					int identity,
@@ -184,22 +197,22 @@ CREATE TABLE SFX.t_modelos (
 	Mod_Nombre				nvarchar(255),
 	Mod_Fab_ID				int
 )
---Creación tabla "Formas de Pago"
+--Creación tabla "Formas de Pago"			--<DUDAS> De la consulta al profesor, nos indico que el tema de las tarjetas la manejaria el sistama externas de dichas tarjetas.
 CREATE TABLE SFX.t_formas_pago (
 	Fpa_ID					int identity,
 	Fpa_Nombre				nvarchar(255),
 )
---Creación tabla "Tipos de Tarjeta"
+--Creación tabla "Tipos de Tarjeta"			--<DUDAS> De la consulta al profesor, nos indico que el tema de las tarjetas la manejaria el sistama externas de dichas tarjetas.
 CREATE TABLE SFX.t_tipo_tarjetas (
 	Tta_ID					int identity,
 	Tta_Nombre				nvarchar(255),
 	Tta_Cuotas				int
 )
---Creación tabla "Tarjetas"
+--Creación tabla "Tarjetas"					--<DUDAS> De la consulta al profesor, nos indico que el tema de las tarjetas la manejaria el sistama externas de dichas tarjetas.
 CREATE TABLE SFX.t_tarjetas (
 	Tar_ID					int identity,
 	Tar_Numero				nvarchar(16),
---	Tar_Fecha_Emision		datetime,
+	Tar_Fecha_Emision		datetime,
 	Tar_Fecha_Vencimiento	datetime,
 	Tar_Codigo_Seg			nvarchar(3),
 	Tar_Tta_ID				int,
@@ -211,16 +224,17 @@ CREATE TABLE SFX.t_compras (
 	Com_Cli_ID				int,
 	Com_Via_ID				int,
 	Com_Fpa_ID				int,
-	Com_Tar_ID				int,
+	Com_Tar_ID				int,			--<DUDAS> Podria ser un campo numerico para guardar el numero de tarjeta y otro para la cantidad de cuotas. Segun el profesor, para simplificar
 	Com_Importe				numeric(18,2)
 )
 --Creación tabla "Detalle de Compras"
-CREATE TABLE SFX.t_detalle_compras (
-	Dec_ID					int identity,
-	Dec_Com_ID				int,
-	Dec_Pas_Codigo			numeric(18,0),
-	Dec_Paq_Codigo			numeric(18,0)
-)
+--CREATE TABLE SFX.t_detalle_compras (		--<DUDAS> No es necesaria, el codigo de compra va en la tabla paquetes/pasajes.
+--	Com_Importe				numeric(18,2)
+--	Dec_ID					int identity,
+--	Dec_Com_ID				int,
+--	Dec_Pas_Codigo			numeric(18,0),
+--	Dec_Paq_Codigo			numeric(18,0)
+--)
 --Creación tabla "Funcionalidades"
 CREATE TABLE SFX.t_funcionalidades (
 	Fun_Id				int identity,
@@ -244,8 +258,8 @@ CREATE TABLE SFX.t_usuarios (
 	Usu_Fecha_Baja		datetime NOT NULL
 )
 --Creación tabla "Roles por Usuario"
-CREATE TABLE SFX.t_login_itentos (
-	Log_id				int identity,
+CREATE TABLE SFX.t_login_intentos (     --<DUDAS> Esta tabla crea un registro por cada intento? o tiene relacion uno a uno con el usuario?
+	Log_id				int identity,  --Si es uno a uno se actualiza el horario y la cantidad de intentos?
 	Log_Usu_Id			int,
 	Log_Horario			datetime,
 	Log_Nro_Intento		int
@@ -262,6 +276,45 @@ CREATE TABLE SFX.t_func_rol(
 	Fxr_Fun_Id			int,
 	Fxr_Rol_Id			int
 )
+----------------------------------------------------------------
+--Creación tabla "Premios"
+CREATE TABLE SFX.t_premios(
+	pre_id				int identity,
+	pre_descripcion		nvarchar(255),
+	pre_valor_puntos	int,
+	pre_stock			int,
+	pre_fecha_alta		datetime,
+	pre_fecha_baja		datetime   --<DUDAS> Puede servir en el momento de consultar los premios que puedo canjear,filtrar por los que tienen stock y/o no estan dados de baja
+)
+--Creación tabla "Canjes"
+CREATE TABLE SFX.t_canjes(
+	can_id				int identity,
+	can_cli_id			int,
+	can_pre_codigo		int,
+	can_puntos			int,
+	can_fecha_canje		datetime
+)
+--Creación tabla "Milas clientes"
+CREATE TABLE SFX.t_millas_cliente(
+	mic_id				int identity,
+	mic_cli_id			int,			
+	mic_cant_millas		int,
+	mic_fecha_alta		datetime,
+	mic_fecha_vigencia	datetime  		--<DUDAS> Lo agrego pero se debe analizar.	
+)
+--Creación tabla "Devoluciones"
+--CREATE TABLE SFX.t_devoluciones(
+--	dev_id				int identity,
+--	dev_com_id			int,			
+--	dev_motivo			nvarchar(255)			
+--)
+										--<DUDAS> La devolucion puede ser para una compra completa o para un pasaje o encomienda
+										--Por esto seguramente ademas de esta tabla , deberiamos crear otra tabla que extendiendo la t_devoluciones
+										--figure el detalle de esa devolucion, es decir, los item a los que se le aplica la devolucion. Ver
+
+
+
+--FALTAN LAS CONSTRAINT DE LAS ULTIMAS TABLAS CREADAS
 
 /*---------------------AGREGAMOS PRIMARY KEYS---------------------*/
 --Agregamos Primary Key a tabla "Clientes"
@@ -319,8 +372,8 @@ ADD CONSTRAINT PK_t_tarjetas PRIMARY KEY(Tar_ID)
 ALTER TABLE SFX.t_compras
 ADD CONSTRAINT PK_t_compras PRIMARY KEY(Com_ID)
 --Agregamos Primary Key a tabla ""Compras"
-ALTER TABLE SFX.t_detalle_compras
-ADD CONSTRAINT PK_t_detalle_compras PRIMARY KEY(Dec_ID)
+--ALTER TABLE SFX.t_detalle_compras
+--ADD CONSTRAINT PK_t_detalle_compras PRIMARY KEY(Dec_ID)
 --Agregamos Primary Key a tabla "Funcionalidades"
 ALTER TABLE SFX.t_funcionalidades
 ADD CONSTRAINT PK_t_funcionalidades PRIMARY KEY(Fun_Id)
@@ -331,7 +384,7 @@ ADD CONSTRAINT PK_t_roles PRIMARY KEY(Rol_Id)
 ALTER TABLE SFX.t_usuarios
 ADD CONSTRAINT PK_t_usuarios PRIMARY KEY(Usu_Id)
 --Agregamos Primary Key a tabla "Login Intentos"
-ALTER TABLE SFX.t_login_itentos
+ALTER TABLE SFX.t_login_intentos
 ADD CONSTRAINT PK_t_login_intentos PRIMARY KEY(Log_id)
 --Agregamos Primary Key a tabla "Roles por Usuario"
 ALTER TABLE SFX.t_rol_usuario
@@ -450,17 +503,17 @@ ALTER TABLE SFX.t_compras
 ADD CONSTRAINT FK_t_compras_04 FOREIGN KEY (Com_Tar_ID) 
     REFERENCES SFX.t_tarjetas (Tar_ID)
 --Agregamos Foreign Key a tabla "Detalle de Compras 01"
-ALTER TABLE SFX.t_detalle_compras 
-ADD CONSTRAINT FK_t_detalle_compras_01 FOREIGN KEY (Dec_Com_ID) 
-    REFERENCES SFX.t_compras (Com_ID)
+--ALTER TABLE SFX.t_detalle_compras 
+--ADD CONSTRAINT FK_t_detalle_compras_01 FOREIGN KEY (Dec_Com_ID) 
+--    REFERENCES SFX.t_compras (Com_ID)
 --Agregamos Foreign Key a tabla "Detalle de Compras 02"
-ALTER TABLE SFX.t_detalle_compras 
-ADD CONSTRAINT FK_t_detalle_compras_02 FOREIGN KEY (Dec_Pas_Codigo) 
-    REFERENCES SFX.t_pasajes (Pas_Codigo)
+--ALTER TABLE SFX.t_detalle_compras 
+--ADD CONSTRAINT FK_t_detalle_compras_02 FOREIGN KEY (Dec_Pas_Codigo) 
+--    REFERENCES SFX.t_pasajes (Pas_Codigo)
 --Agregamos Foreign Key a tabla "Detalle de Compras 03"
-ALTER TABLE SFX.t_detalle_compras 
-ADD CONSTRAINT FK_t_detalle_compras_03 FOREIGN KEY (Dec_Paq_Codigo) 
-    REFERENCES SFX.t_paquetes (Paq_Codigo)
+--ALTER TABLE SFX.t_detalle_compras 
+--ADD CONSTRAINT FK_t_detalle_compras_03 FOREIGN KEY (Dec_Paq_Codigo) 
+--    REFERENCES SFX.t_paquetes (Paq_Codigo)
 --Agregamos Foreign Key a tabla "Roles por Usuario"
 ALTER TABLE SFX.t_rol_usuario
 ADD CONSTRAINT FK_rol_usuario_01 FOREIGN KEY (Rxu_Rol_Id) 
@@ -470,8 +523,8 @@ ALTER TABLE SFX.t_rol_usuario
 ADD CONSTRAINT FK_rol_usuario_02 FOREIGN KEY (Rxu_Usu_Id) 
     REFERENCES SFX.t_usuarios (Usu_Id) 
 --Agregamos Foreign Key a tabla "Login Usuarios"
-ALTER TABLE SFX.t_login_itentos
-ADD CONSTRAINT FK_login_itentos_01 FOREIGN KEY (Log_Usu_Id) 
+ALTER TABLE SFX.t_login_intentos
+ADD CONSTRAINT FK_login_intentos_01 FOREIGN KEY (Log_Usu_Id) 
     REFERENCES SFX.t_usuarios (Usu_Id) 
 --Agregamos Foreign Key a tabla "Funcionalidades por Rol"
 ALTER TABLE SFX.t_func_rol
