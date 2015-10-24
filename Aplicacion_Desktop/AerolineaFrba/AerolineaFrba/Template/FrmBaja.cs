@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AerolineaFrba.Devolucion
+namespace AerolineaFrba.Template
 {
-    public partial class Form1 : Form
+    public partial class FrmBaja : Form
     {
-        public Form1()
+        public FrmBaja()
         {
             InitializeComponent();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
