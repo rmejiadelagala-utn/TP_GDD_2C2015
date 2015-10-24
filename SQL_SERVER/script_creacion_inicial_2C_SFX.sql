@@ -10,7 +10,6 @@ BEGIN
 	EXEC ('CREATE SCHEMA SFX AUTHORIZATION gd')
 END
 
-/* comentario desde git */
 
 /*---------------------ELIMINACIÓN DE TABLAS---------------------*/
 IF OBJECT_ID('SFX.t_butacas_viaje') IS NOT NULL
