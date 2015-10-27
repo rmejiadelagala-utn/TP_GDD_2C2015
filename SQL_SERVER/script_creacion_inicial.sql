@@ -696,6 +696,39 @@ CLOSE aeronave_cursor
 DEALLOCATE aeronave_cursor
 
 
+--Migramos datos de la tabla maestra a tabla "t_butacas"--------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DECLARE 
+@aeronave nvarchar(255), @nroButaca numeric(3,0), @pisoButaca  numeric(1,0), @tipoButaca nvarchar(255),
+@aeronave_id int, @tipoButaca_id int ; 
+
+--- Cursor principal de butacas 
+DECLARE butaca_cursor CURSOR FOR 
+	select distinct Aeronave_Matricula, Butaca_Nro, Butaca_Piso, Butaca_Tipo
+	from gd_esquema.Maestra
+	where Butaca_Tipo <> '0' -- si butaca_tipo es distinto a cero entonces es pasaje y no encomienda
+	order by Aeronave_Matricula, Butaca_Nro
+
+OPEN butaca_cursor
+
+FETCH NEXT FROM butaca_cursor INTO @aeronave, @nroButaca, @pisoButaca, @tipoButaca
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @aeronave_id   = (SELECT Aer_ID FROM SFX.t_aeronaves WHERE Aer_Matricula=@aeronave)
+	SET @tipoButaca_id = (SELECT Tbu_ID FROM SFX.t_tipo_butacas WHERE Tbu_Descripcion=@tipoButaca)
+
+	INSERT INTO SFX.t_butacas
+			VALUES (@nroButaca, @pisoButaca, @aeronave_id, @tipoButaca_id)
+
+	FETCH NEXT FROM butaca_cursor INTO @aeronave, @nroButaca, @pisoButaca, @tipoButaca
+END
+
+CLOSE butaca_cursor
+DEALLOCATE butaca_cursor
+
+
 
 /*---------------------CREACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
 
