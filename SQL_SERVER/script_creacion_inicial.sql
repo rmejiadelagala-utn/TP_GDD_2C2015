@@ -489,7 +489,7 @@ INSERT INTO [SFX].t_fabricantes
 SELECT	DISTINCT m.Aeronave_Fabricante
 FROM [gd_esquema].Maestra m
 
---Migramos datos de la tabla maestra a tabla "t_fabricantes"----------------------------------------------------------------------------------------------
+--Migramos datos de la tabla maestra a tabla "t_roles"----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 INSERT INTO SFX.t_roles (Rol_Nombre,Rol_Estado) VALUES ('Administrador General', 'A')
 INSERT INTO SFX.t_roles (Rol_Nombre,Rol_Estado) VALUES ('Cliente', 'A')
@@ -536,7 +536,7 @@ INSERT INTO [SFX].[t_func_rol] VALUES (12,1)
 INSERT INTO [SFX].[t_func_rol] VALUES (13,1)
 
 
---Migramos datos de la tabla maestra a tabla "t_modelos"-----------------------------------------------------------------------------------------------------------
+--Migramos datos de la tabla maestra a tabla "t_modelos"--------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 INSERT INTO [SFX].[t_modelos] 
 SELECT DISTINCT a.aeronave_modelo, b.Fab_ID
@@ -655,6 +655,46 @@ BEGIN
 END 
 CLOSE rutas_cursor;
 DEALLOCATE rutas_cursor
+
+--Migramos datos de la tabla maestra a tabla "t_tipo_butacas"---------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+INSERT INTO [SFX].[t_tipo_butacas] 
+SELECT DISTINCT Butaca_Tipo
+FROM [gd_esquema].[Maestra]
+WHERE Butaca_Tipo <> '0'
+
+--Migramos datos de la tabla maestra a tabla "t_aeronaves"------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+DECLARE 
+@aer_matricula nvarchar(255), @modelo nvarchar(255), @fabricante nvarchar(255), @aer_kg numeric(18,0), @servicio  nvarchar(255),
+@modelo_id int, @serv_id int ; 
+
+--- Cursor principal 
+DECLARE aeronave_cursor CURSOR FOR 
+	select distinct Aeronave_Matricula, Aeronave_Modelo,Aeronave_Fabricante,Aeronave_KG_Disponibles, Tipo_Servicio 
+	from gd_esquema.Maestra;
+
+OPEN aeronave_cursor
+
+FETCH NEXT FROM aeronave_cursor INTO @aer_matricula, @modelo, @fabricante, @aer_kg, @servicio
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+  
+	SET @modelo_id = (select Mod_ID from SFX.t_modelos 
+						where Mod_Nombre=@modelo 
+						and Mod_Fab_ID = (select Fab_ID from SFX.t_fabricantes where Fab_Nombre=@fabricante)
+					 )
+	SET @serv_id   = (select Ser_ID from SFX.t_servicios where Ser_Descripcion=@servicio)
+
+	INSERT INTO SFX.t_aeronaves 
+			   values ( @aer_matricula, @modelo_id, @aer_kg, '01-01-2000',NULL,NULL,NULL,@serv_id) 
+
+	FETCH NEXT FROM aeronave_cursor INTO @aer_matricula, @modelo, @fabricante, @aer_kg, @servicio
+END 
+CLOSE aeronave_cursor
+DEALLOCATE aeronave_cursor
+
 
 
 /*---------------------CREACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
