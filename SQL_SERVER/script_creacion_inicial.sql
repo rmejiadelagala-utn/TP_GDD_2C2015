@@ -728,7 +728,60 @@ END
 CLOSE butaca_cursor
 DEALLOCATE butaca_cursor
 
+--Migramos datos de la tabla maestra a tabla "t_viajes"--------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+DECLARE
+@ruta_codigo numeric, @aero_matricula nvarchar(255), @tipoServicio nvarchar(255), @fechSalida datetime, @fechLlegadaEstimada datetime, @fechLlegada datetime,
+@duplic int, @ID_tipoServAeronave int, @ID_tipoServRuta int, @Id_aeronave int, @Id_ruta int
+
+DECLARE cursor_viajes CURSOR FOR
+select distinct ruta_codigo,Aeronave_Matricula, Tipo_Servicio, FechaSalida, Fecha_LLegada_Estimada, FechaLLegada from gd_esquema.Maestra 
+order by ruta_codigo,Aeronave_Matricula, Tipo_Servicio;
+
+OPEN cursor_viajes
+
+FETCH NEXT FROM cursor_viajes 
+INTO @ruta_codigo, @aero_matricula, @tipoServicio, @fechSalida, @fechLlegadaEstimada, @fechLlegada 
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	---- cargamos variables para realizar las validaciones en seccion CASE ----
+	SET @duplic=(select count(*) from SFX.t_rutas where Rut_Codigo=@ruta_codigo)
+	SET @Id_ruta = CASE WHEN @duplic>1 
+						THEN  (select TOP 1 Rut_ID from SFX.t_rutas where Rut_Codigo=@ruta_codigo) --si es ruta duplicadas tomamos la primera que levanta.
+					    ELSE (select Rut_ID from SFX.t_rutas where Rut_Codigo=@ruta_codigo) -- si no es duplicada hago el select directo.
+					END
+	SET @ID_tipoServAeronave =(select Aer_Ser_ID from SFX.t_aeronaves where Aer_Matricula=@aero_matricula)
+	SET @ID_tipoServRuta     =(select Rut_Ser_ID from SFX.t_rutas where Rut_ID=@Id_ruta)
+	SET @Id_aeronave=(select Aer_ID from SFX.t_aeronaves where Aer_Matricula=@aero_matricula)
+
+	--- Hacemos el insert ---
+	Insert into SFX.t_viajes values (
+	@Id_ruta,
+	@Id_aeronave,
+	@fechSalida,
+	@fechLlegada,
+	@fechLlegadaEstimada,
+	----Seccion validaciones, sobre el viaje ---
+	CASE
+		WHEN @fechSalida < GETDATE() THEN 1  --validacion que fecha de salida sea mayor a la actual
+		WHEN @ID_tipoServAeronave<>@ID_tipoServRuta THEN 1 -- validacion de coincidencia de servicio ruta vs nave
+		WHEN @fechLlegadaEstimada > DATEADD(DAY,1,@fechSalida) THEN 1  -- la fecha estimada no puede ser de mas de 24 horas
+		WHEN EXISTS (select 1 from SFX.t_viajes 
+							  where Via_Aer_ID=@Id_aeronave and Via_Fecha_Salida=@fechSalida) THEN 1 --validamos si ya existe avion con la misma fecha de salida.
+		ELSE
+			0  -- Si superó todas las validaciones, entonces el viaje es valido.
+	END
+	)
+
+FETCH NEXT FROM cursor_viajes 
+INTO @ruta_codigo, @aero_matricula, @tipoServicio, @fechSalida, @fechLlegadaEstimada, @fechLlegada 
+
+END
+
+CLOSE cursor_viajes
+DEALLOCATE cursor_viajes
 
 /*---------------------CREACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
 
