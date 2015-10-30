@@ -138,7 +138,7 @@ CREATE TABLE SFX.t_viajes (
 	Via_Fecha_Salida			datetime,
 	Via_Fecha_Llegada			datetime,
 	Via_Fecha_Llegada_Estimada	datetime,
-	Via_Fecha_Llegada_Destino	datetime
+	Via_Invalido				bit	  -- 1=Invalido, 0=valido
 )
 --Creación tabla "Tipo Butacas"
 CREATE TABLE SFX.t_tipo_butacas (
