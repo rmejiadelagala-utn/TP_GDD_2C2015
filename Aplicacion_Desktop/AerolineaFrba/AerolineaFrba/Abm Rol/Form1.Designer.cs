@@ -1,6 +1,6 @@
-﻿namespace AerolineaFrba.Template
+﻿namespace AerolineaFrba.Abm_Rol
 {
-    partial class FrmModificacion
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "FrmModificacion";
+            this.Text = "Form1";
         }
 
         #endregion

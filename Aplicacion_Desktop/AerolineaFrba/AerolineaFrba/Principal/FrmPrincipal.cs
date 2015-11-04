@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AerolineaFrba.Principal;
+using AerolineaFrba.Abm_Ciudad;
 
 namespace AerolineaFrba.Principal
 {
@@ -39,6 +40,29 @@ namespace AerolineaFrba.Principal
         private void rolesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmListadoRol c = new FrmListadoRol();
+            c.Show();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void ciudadesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAltaCiudad c = new FrmAltaCiudad();
+            c.Show();
+        }
+
+        private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmListadoCiudad c = new FrmListadoCiudad();
+            c.Show();
+        }
+
+        private void altaModificaciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAltaCiudad c = new FrmAltaCiudad();
             c.Show();
         }
     }

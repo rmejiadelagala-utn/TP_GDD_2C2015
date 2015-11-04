@@ -55,6 +55,7 @@ namespace AerolineaFrba
         public int EjecutarFuncion()
         {
             int resultado = Convert.ToInt32(cmd.ExecuteScalar());
+            
             return resultado;
 
         }

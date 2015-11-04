@@ -49,7 +49,7 @@ namespace AerolineaFrba.Login
 
                 int result = cnn.EjecutarFuncion();
                 
-                if (result == 0)
+                if (result > 0)
                 {
                     FrmPrincipal f = new FrmPrincipal();
                     f.Show();

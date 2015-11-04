@@ -1,6 +1,6 @@
-﻿namespace AerolineaFrba.Abm_Rol
+﻿namespace AerolineaFrba.Registro_Llegada_Destino
 {
-    partial class FrmListadoRol
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -28,30 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // cmdLimpiar
-            // 
-            this.cmdLimpiar.Click += new System.EventHandler(this.cmdLimpiar_Click);
-            // 
-            // cmdBuscar
-            // 
-            this.cmdBuscar.Click += new System.EventHandler(this.cmdBuscar_Click);
-            // 
-            // grdFiltros
-            // 
-            this.grdFiltros.Enter += new System.EventHandler(this.grdFiltros_Enter);
-            // 
-            // FrmListadoRol
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(373, 358);
-            this.Name = "FrmListadoRol";
-            this.Text = "Listado Roles";
-            this.Load += new System.EventHandler(this.FrmListadoRol_Load);
-            this.ResumeLayout(false);
-
+            this.Text = "Form1";
         }
 
         #endregion

@@ -72,11 +72,23 @@
     <Compile Include="Abm Aeronave\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Ciudad\Form1.cs">
+    <Compile Include="Abm Ciudad\FrmBaja.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Ciudad\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Ciudad\FrmBaja.Designer.cs">
+      <DependentUpon>FrmBaja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmAltaCiudad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmAltaCiudad.Designer.cs">
+      <DependentUpon>FrmAltaCiudad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmListadoCiudad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmListadoCiudad.Designer.cs">
+      <DependentUpon>FrmListadoCiudad.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Rol\FrmListadoRol.cs">
       <SubType>Form</SubType>
@@ -153,17 +165,17 @@
     <Compile Include="Registro de Usuario\FrmUsuarios.Designer.cs">
       <DependentUpon>FrmUsuarios.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login\Registro Llegada Destino\Form1.cs">
+    <Compile Include="Registro Llegada Destino\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login\Registro Llegada Destino\Form1.Designer.cs">
+    <Compile Include="Registro Llegada Destino\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Template\FrmAlta.cs">
+    <Compile Include="Template\FrmAltaModificacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Template\FrmAlta.Designer.cs">
-      <DependentUpon>FrmAlta.cs</DependentUpon>
+    <Compile Include="Template\FrmAltaModificacion.Designer.cs">
+      <DependentUpon>FrmAltaModificacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Template\FrmBaja.cs">
       <SubType>Form</SubType>
@@ -177,12 +189,15 @@
     <Compile Include="Template\FrmListadoTemplate.Designer.cs">
       <DependentUpon>FrmListadoTemplate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Template\FrmModificacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Template\FrmModificacion.Designer.cs">
-      <DependentUpon>FrmModificacion.cs</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="Abm Ciudad\FrmAltaCiudad.resx">
+      <DependentUpon>FrmAltaCiudad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ciudad\FrmBaja.resx">
+      <DependentUpon>FrmBaja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ciudad\FrmListadoCiudad.resx">
+      <DependentUpon>FrmListadoCiudad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\FrmListadoRol.resx">
       <DependentUpon>FrmListadoRol.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,6 +230,12 @@
     </Compile>
     <EmbeddedResource Include="Registro de Usuario\FrmUsuarios.resx">
       <DependentUpon>FrmUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template\FrmAltaModificacion.resx">
+      <DependentUpon>FrmAltaModificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template\FrmBaja.resx">
+      <DependentUpon>FrmBaja.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Template\FrmListadoTemplate.resx">
       <DependentUpon>FrmListadoTemplate.cs</DependentUpon>

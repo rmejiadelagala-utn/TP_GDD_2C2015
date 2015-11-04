@@ -1,6 +1,6 @@
 ﻿namespace AerolineaFrba.Template
 {
-    partial class FrmListadoTemplate
+    partial class FrmAltaModificacion
     {
         /// <summary>
         /// Required designer variable.
@@ -29,50 +29,46 @@
         private void InitializeComponent()
         {
             this.cmdLimpiar = new System.Windows.Forms.Button();
-            this.cmdBuscar = new System.Windows.Forms.Button();
-            this.grdFiltros = new System.Windows.Forms.GroupBox();
+            this.cmdGuardar = new System.Windows.Forms.Button();
+            this.grdCampos = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // cmdLimpiar
             // 
-            this.cmdLimpiar.Location = new System.Drawing.Point(10, 137);
+            this.cmdLimpiar.Location = new System.Drawing.Point(12, 302);
             this.cmdLimpiar.Name = "cmdLimpiar";
-            this.cmdLimpiar.Size = new System.Drawing.Size(76, 24);
-            this.cmdLimpiar.TabIndex = 1;
+            this.cmdLimpiar.Size = new System.Drawing.Size(88, 24);
+            this.cmdLimpiar.TabIndex = 0;
             this.cmdLimpiar.Text = "&Limpiar";
             this.cmdLimpiar.UseVisualStyleBackColor = true;
             // 
-            // cmdBuscar
+            // cmdGuardar
             // 
-            this.cmdBuscar.Location = new System.Drawing.Point(290, 137);
-            this.cmdBuscar.Name = "cmdBuscar";
-            this.cmdBuscar.Size = new System.Drawing.Size(74, 24);
-            this.cmdBuscar.TabIndex = 2;
-            this.cmdBuscar.Text = "&Buscar";
-            this.cmdBuscar.UseVisualStyleBackColor = true;
+            this.cmdGuardar.Location = new System.Drawing.Point(274, 302);
+            this.cmdGuardar.Name = "cmdGuardar";
+            this.cmdGuardar.Size = new System.Drawing.Size(88, 24);
+            this.cmdGuardar.TabIndex = 1;
+            this.cmdGuardar.Text = "&Guardar";
+            this.cmdGuardar.UseVisualStyleBackColor = true;
             // 
-            // grdFiltros
+            // grdCampos
             // 
-            this.grdFiltros.Location = new System.Drawing.Point(10, 29);
-            this.grdFiltros.Name = "grdFiltros";
-            this.grdFiltros.Size = new System.Drawing.Size(353, 96);
-            this.grdFiltros.TabIndex = 3;
-            this.grdFiltros.TabStop = false;
-            this.grdFiltros.Text = "Filtros de búsqueda";
-            this.grdFiltros.Enter += new System.EventHandler(this.grdFiltros_Enter);
+            this.grdCampos.Location = new System.Drawing.Point(12, 13);
+            this.grdCampos.Name = "grdCampos";
+            this.grdCampos.Size = new System.Drawing.Size(350, 273);
+            this.grdCampos.TabIndex = 2;
+            this.grdCampos.TabStop = false;
             // 
-            // FrmListadoTemplate
+            // FrmAltaModificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 352);
-            this.Controls.Add(this.grdFiltros);
-            this.Controls.Add(this.cmdBuscar);
+            this.Controls.Add(this.grdCampos);
+            this.Controls.Add(this.cmdGuardar);
             this.Controls.Add(this.cmdLimpiar);
-            this.Name = "FrmListadoTemplate";
-            this.Text = "Listado";
-            this.TopMost = true;
-            this.Load += new System.EventHandler(this.FrmListado_Load);
+            this.Name = "FrmAltaModificacion";
+            this.Text = "AltaModificacion";
             this.ResumeLayout(false);
 
         }
@@ -80,8 +76,8 @@
         #endregion
 
         public System.Windows.Forms.Button cmdLimpiar;
-        public System.Windows.Forms.Button cmdBuscar;
-        public System.Windows.Forms.GroupBox grdFiltros;
+        public System.Windows.Forms.Button cmdGuardar;
+        public System.Windows.Forms.GroupBox grdCampos;
 
     }
 }

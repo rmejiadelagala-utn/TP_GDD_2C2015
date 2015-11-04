@@ -22,5 +22,20 @@ namespace AerolineaFrba.Abm_Rol
         {
 
         }
+
+        private void cmdBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdLimpiar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void grdFiltros_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
