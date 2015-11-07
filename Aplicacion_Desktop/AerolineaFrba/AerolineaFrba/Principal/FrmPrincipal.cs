@@ -54,7 +54,7 @@ namespace AerolineaFrba.Principal
             c.Show();
         }
 
-        private void listadoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void modificacionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmListadoCiudad c = new FrmListadoCiudad();
             c.Show();
@@ -64,6 +64,17 @@ namespace AerolineaFrba.Principal
         {
             FrmAltaCiudad c = new FrmAltaCiudad();
             c.Show();
+        }
+
+        private void bajaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmBaja c = new FrmBaja();
+            c.Show();
+        }
+
+        private void listadoToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
