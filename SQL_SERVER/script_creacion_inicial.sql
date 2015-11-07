@@ -732,7 +732,8 @@ DEALLOCATE butaca_cursor
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 DECLARE
-@ruta_codigo numeric, @aero_matricula nvarchar(255), @tipoServicio nvarchar(255), @fechSalida datetime, @fechLlegadaEstimada datetime, @fechLlegada datetime,
+--@ruta_codigo numeric, 
+@aero_matricula nvarchar(255), @tipoServicio nvarchar(255), @fechSalida datetime, @fechLlegadaEstimada datetime, @fechLlegada datetime,
 @duplic int, @ID_tipoServAeronave int, @ID_tipoServRuta int, @Id_aeronave int, @Id_ruta int
 
 DECLARE cursor_viajes CURSOR FOR
