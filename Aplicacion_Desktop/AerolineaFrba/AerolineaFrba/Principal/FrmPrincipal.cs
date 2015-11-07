@@ -74,6 +74,8 @@ namespace AerolineaFrba.Principal
 
         private void listadoToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            FrmListadoCiudad c = new FrmListadoCiudad();
+            c.Show();
 
         }
     }

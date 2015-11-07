@@ -29,20 +29,30 @@ namespace AerolineaFrba.Abm_Ciudad
             SqlCommand cmd; //SqlConnection cn;
             SqlConnection cn = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD2C2015;User ID=gd;Password=gd2015");
             cn.Open();
-            if (this.txtCiudad.Text == "")
+            /*if (this.txtCiudad.Text == "")
             {
                 cmd = new SqlCommand("Select * from SFX.t_ciudades_aeropuertos", cn);
             }
             else
-            {
-                cmd = new SqlCommand("Select * from SFX.t_ciudades_aeropuertos where Cia_Descripcion="+ "'"+this.txtCiudad.Text +"';", cn);
-            }
+            {*/
+                cmd = new SqlCommand("Select * from SFX.t_ciudades_aeropuertos where Cia_Descripcion Like "+ "'%"+this.txtCiudad.Text +"%';", cn);
+            //}
                        
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             da.Fill(dt);
             this.dataGridView1.DataSource = dt;
             cn.Close();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void grdFiltros_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

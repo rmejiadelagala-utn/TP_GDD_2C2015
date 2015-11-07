@@ -43,6 +43,7 @@
             // 
             this.grdFiltros.Controls.Add(this.txtCiudad);
             this.grdFiltros.Controls.Add(this.lblCiudad);
+            this.grdFiltros.Enter += new System.EventHandler(this.grdFiltros_Enter);
             // 
             // dataGridView1
             // 
@@ -52,6 +53,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(352, 170);
             this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // lblCiudad
             // 

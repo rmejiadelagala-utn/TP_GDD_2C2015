@@ -10,10 +10,13 @@ namespace AerolineaFrba
     {
         SqlConnection cn;
         SqlCommand cmd = new SqlCommand();
+        String miConexion = AerolineaFrba.Properties.Settings.Default.GD2C2015ConnectionString;
 
         public Conexion()
         {
-            cn = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD2C2015;User ID=gd;Password=gd2015");
+            
+            //cn = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD2C2015;User ID=gd;Password=gd2015");
+            cn = new SqlConnection(miConexion);
         }
 
         public void Abrir()
@@ -37,7 +40,7 @@ namespace AerolineaFrba
             cmd = new SqlCommand();
             cmd.Connection = cn;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT dbo." + nombreFuncion + "(@userName,@password);";
+            cmd.CommandText = "SELECT SFX." + nombreFuncion + "(@userName,@password);";
         }
 
 

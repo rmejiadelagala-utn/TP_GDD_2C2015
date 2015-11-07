@@ -90,6 +90,12 @@
     <Compile Include="Abm Ciudad\FrmListadoCiudad.Designer.cs">
       <DependentUpon>FrmListadoCiudad.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Ciudad\FrmModificacionCiudad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmModificacionCiudad.Designer.cs">
+      <DependentUpon>FrmModificacionCiudad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Rol\FrmListadoRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ciudad\FrmListadoCiudad.resx">
       <DependentUpon>FrmListadoCiudad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ciudad\FrmModificacionCiudad.resx">
+      <DependentUpon>FrmModificacionCiudad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\FrmListadoRol.resx">
       <DependentUpon>FrmListadoRol.cs</DependentUpon>

@@ -1,6 +1,6 @@
 ﻿namespace AerolineaFrba.Abm_Ciudad
 {
-    partial class FrmAltaCiudad
+    partial class FrmModificacionCiudad
     {
         /// <summary>
         /// Required designer variable.
@@ -28,56 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblCiudad = new System.Windows.Forms.Label();
             this.txtCiudad = new System.Windows.Forms.TextBox();
-            this.grdCampos.SuspendLayout();
+            this.lblCiudad = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cmdLimpiar
             // 
-            this.cmdLimpiar.Location = new System.Drawing.Point(12, 199);
             this.cmdLimpiar.Click += new System.EventHandler(this.cmdLimpiar_Click);
             // 
             // cmdGuardar
             // 
-            this.cmdGuardar.Location = new System.Drawing.Point(274, 199);
             this.cmdGuardar.Click += new System.EventHandler(this.cmdGuardar_Click);
             // 
-            // grdCampos
+            // txtCiudad
             // 
-            this.grdCampos.Controls.Add(this.txtCiudad);
-            this.grdCampos.Controls.Add(this.lblCiudad);
-            this.grdCampos.Size = new System.Drawing.Size(350, 153);
-            this.grdCampos.Enter += new System.EventHandler(this.grdCampos_Enter);
+            this.txtCiudad.Location = new System.Drawing.Point(104, 65);
+            this.txtCiudad.Name = "txtCiudad";
+            this.txtCiudad.Size = new System.Drawing.Size(138, 20);
+            this.txtCiudad.TabIndex = 6;
+            this.txtCiudad.TextChanged += new System.EventHandler(this.txtCiudad_TextChanged);
             // 
             // lblCiudad
             // 
             this.lblCiudad.AutoSize = true;
-            this.lblCiudad.Location = new System.Drawing.Point(16, 58);
+            this.lblCiudad.Location = new System.Drawing.Point(42, 65);
             this.lblCiudad.Name = "lblCiudad";
             this.lblCiudad.Size = new System.Drawing.Size(43, 13);
-            this.lblCiudad.TabIndex = 3;
+            this.lblCiudad.TabIndex = 5;
             this.lblCiudad.Text = "Ciudad:";
             // 
-            // txtCiudad
-            // 
-            this.txtCiudad.Location = new System.Drawing.Point(89, 58);
-            this.txtCiudad.Name = "txtCiudad";
-            this.txtCiudad.Size = new System.Drawing.Size(138, 20);
-            this.txtCiudad.TabIndex = 4;
-            this.txtCiudad.TextChanged += new System.EventHandler(this.txtCiudad_TextChanged);
-            // 
-            // FrmAltaCiudad
+            // FrmModificacionCiudad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 233);
-            this.Name = "FrmAltaCiudad";
-            this.Text = "";
-            this.Load += new System.EventHandler(this.FrmAltaModificacion_Load);
-            this.grdCampos.ResumeLayout(false);
-            this.grdCampos.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(371, 334);
+            this.Controls.Add(this.txtCiudad);
+            this.Controls.Add(this.lblCiudad);
+            this.Name = "FrmModificacionCiudad";
+            this.Text = "FrmModificacionCiudad";
+            this.Load += new System.EventHandler(this.FrmModificacionCiudad_Load);
+            this.Controls.SetChildIndex(this.cmdLimpiar, 0);
+            this.Controls.SetChildIndex(this.cmdGuardar, 0);
+            this.Controls.SetChildIndex(this.grdCampos, 0);
+            this.Controls.SetChildIndex(this.lblCiudad, 0);
+            this.Controls.SetChildIndex(this.txtCiudad, 0);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

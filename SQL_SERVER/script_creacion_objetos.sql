@@ -1,15 +1,18 @@
 USE [GD2C2015]
 GO
-IF OBJECT_ID('dbo.ExisteUsuario') IS NOT NULL
-DROP FUNCTION dbo.ExisteUsuario
-
+IF OBJECT_ID('SFX.ExisteUsuario') IS NOT NULL
+DROP FUNCTION SFX.ExisteUsuario
 IF OBJECT_ID('SFX.GetCiudades') IS NOT NULL
 DROP PROCEDURE SFX.GetCiudades
-
 IF OBJECT_ID('SFX.InsertarCiudad') IS NOT NULL
 DROP PROCEDURE SFX.InsertarCiudad
+IF OBJECT_ID('SFX.ModificarCiudad') IS NOT NULL
+DROP PROCEDURE SFX.ModificarCiudad
+IF OBJECT_ID('SFX.BajaCiudad') IS NOT NULL
+DROP PROCEDURE SFX.BajaCiudad
 
-/****** Object:  UserDefinedFunction [dbo].[ExisteUsuario]    Script Date: 07/11/2015 10:39:20 a.m. ******/
+
+/****** Object:  UserDefinedFunction [sfx].[ExisteUsuario]    Script Date: 07/11/2015 10:39:20 a.m. ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -46,9 +49,9 @@ CREATE PROCEDURE [SFX].[GetCiudades]
 	
 AS
 BEGIN
-	SELECT *
-	FROM [SFX].[t_ciudades_aeropuertos]
-
+	SELECT C.*
+	FROM [SFX].[t_ciudades_aeropuertos] C
+	WHERE c.Cia_Fecha_Baja IS NOT NULL
 END
 GO
 
@@ -74,3 +77,58 @@ BEGIN CATCH
 	PRINT ERROR_MESSAGE();
 
 END CATCH
+GO
+
+CREATE PROCEDURE [SFX].[ModificarCiudad] 
+
+	@ID				int,
+	@CiudadNombre	nvarchar(255)
+	
+AS
+BEGIN TRY
+
+	BEGIN TRAN;
+
+	UPDATE [SFX].[t_ciudades_aeropuertos] 
+	   SET Cia_Descripcion = @CiudadNombre
+	 WHERE Cia_ID = @ID;
+
+	COMMIT;
+
+END TRY
+
+BEGIN CATCH
+	
+	ROLLBACK
+
+	PRINT ERROR_MESSAGE();
+
+END CATCH
+GO
+
+
+CREATE PROCEDURE [SFX].[BajaCiudad] 
+
+	@ID				int
+	
+AS
+BEGIN TRY
+
+	BEGIN TRAN;
+
+	UPDATE [SFX].[t_ciudades_aeropuertos] 
+	   SET Cia_Fecha_Baja = getdate()
+	 WHERE Cia_ID = @ID;
+
+	COMMIT;
+
+END TRY
+
+BEGIN CATCH
+	
+	ROLLBACK
+
+	PRINT ERROR_MESSAGE();
+
+END CATCH
+GO

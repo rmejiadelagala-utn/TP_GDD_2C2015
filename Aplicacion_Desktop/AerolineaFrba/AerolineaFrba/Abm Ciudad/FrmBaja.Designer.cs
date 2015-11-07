@@ -31,7 +31,6 @@
             this.txtCiudadEliminar = new System.Windows.Forms.TextBox();
             this.lblCiudadEliminar = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.grdFiltros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -73,21 +72,11 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1});
             this.dataGridView1.Location = new System.Drawing.Point(18, 197);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(504, 150);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Botones";
-            this.Column1.Name = "Column1";
-            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column1.Text = "Baja";
-            this.Column1.UseColumnTextForButtonValue = true;
             // 
             // FrmBaja
             // 
@@ -114,6 +103,5 @@
         private System.Windows.Forms.Label lblCiudadEliminar;
         private System.Windows.Forms.TextBox txtCiudadEliminar;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewButtonColumn Column1;
     }
 }

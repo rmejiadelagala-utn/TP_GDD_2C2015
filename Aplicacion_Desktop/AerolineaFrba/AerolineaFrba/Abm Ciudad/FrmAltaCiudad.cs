@@ -46,7 +46,7 @@ namespace AerolineaFrba.Abm_Ciudad
             {
                 Conexion cnn = new Conexion();
 
-                cnn.ArmarProcedimiento("InsertarCiudad");
+                cnn.ArmarProcedimiento("SFX.InsertarCiudad");
 
                 cnn.AgregarParametro("CiudadNombre", txtCiudad.Text);
 
@@ -62,6 +62,11 @@ namespace AerolineaFrba.Abm_Ciudad
                 MessageBox.Show(ex.ToString());
             }
         
+        }
+
+        private void txtCiudad_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
