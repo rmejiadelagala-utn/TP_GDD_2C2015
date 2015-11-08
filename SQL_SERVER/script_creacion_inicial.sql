@@ -9,10 +9,16 @@ BEGIN
 END
 
 /*---------------------ELIMINACIÓN DE TABLAS---------------------*/
+IF OBJECT_ID('SFX.t_devolucion_pasaje') IS NOT NULL
+DROP TABLE SFX.t_devolucion_pasaje 
+IF OBJECT_ID('SFX.t_devolucion_paquete') IS NOT NULL
+DROP TABLE SFX.t_devolucion_paquete 
+IF OBJECT_ID('SFX.t_devoluciones') IS NOT NULL
+DROP TABLE SFX.t_devoluciones
 IF OBJECT_ID('SFX.t_butacas_viaje') IS NOT NULL
 DROP TABLE SFX.t_butacas_viaje 
-IF OBJECT_ID('SFX.t_detalle_compras') IS NOT NULL
-DROP TABLE SFX.t_detalle_compras
+--IF OBJECT_ID('SFX.t_detalle_compras') IS NOT NULL
+--DROP TABLE SFX.t_detalle_compras
 IF OBJECT_ID('SFX.t_pasajes') IS NOT NULL
 DROP TABLE SFX.t_pasajes
 IF OBJECT_ID('SFX.t_paquetes') IS NOT NULL
@@ -21,12 +27,18 @@ IF OBJECT_ID('SFX.t_butacas') IS NOT NULL
 DROP TABLE SFX.t_butacas
 IF OBJECT_ID('SFX.t_compras') IS NOT NULL
 DROP TABLE SFX.t_compras
-IF OBJECT_ID('SFX.t_formas_pago') IS NOT NULL
-DROP TABLE SFX.t_formas_pago
 IF OBJECT_ID('SFX.t_tarjetas') IS NOT NULL
 DROP TABLE SFX.t_tarjetas
+IF OBJECT_ID('SFX.t_tipo_tarjetas_cuotas') IS NOT NULL
+DROP TABLE SFX.t_tipo_tarjetas_cuotas
 IF OBJECT_ID('SFX.t_tipo_tarjetas') IS NOT NULL
 DROP TABLE SFX.t_tipo_tarjetas
+IF OBJECT_ID('SFX.t_formas_pago') IS NOT NULL
+DROP TABLE SFX.t_formas_pago
+IF OBJECT_ID('SFX.t_premio_canje') IS NOT NULL
+DROP TABLE SFX.t_premio_canje
+IF OBJECT_ID('SFX.t_premio') IS NOT NULL
+DROP TABLE SFX.t_premio
 IF OBJECT_ID('SFX.t_clientes') IS NOT NULL
 DROP TABLE SFX.t_clientes
 IF OBJECT_ID('SFX.t_butacas') IS NOT NULL
@@ -59,6 +71,8 @@ IF OBJECT_ID('SFX.t_usuarios') IS NOT NULL
 DROP TABLE SFX.t_usuarios
 IF OBJECT_ID('SFX.t_funcionalidades') IS NOT NULL
 DROP TABLE SFX.t_funcionalidades
+IF OBJECT_ID('SFX.t_milla_detalle') IS NOT NULL
+DROP TABLE SFX.t_milla_detalle
 
 
 /*---------------------ELIMINACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
@@ -84,7 +98,8 @@ CREATE TABLE SFX.t_pasajes (
 	Pas_FechaCompra		datetime NULL,
 	Pas_Estado			nvarchar(255),
 	Pas_But_ID			int,
-	Pas_Cli_ID			int	
+	Pas_Cli_ID			int,
+	Pas_Com_id			int	
 )
 --Creación tabla "Paquetes"
 CREATE TABLE SFX.t_paquetes (
@@ -92,8 +107,9 @@ CREATE TABLE SFX.t_paquetes (
 	Paq_Precio			numeric(18,2) NULL,
 	Paq_KG				numeric(18,0) NULL,
 	Paq_FechaCompra		datetime NULL,
-	Paq_Via_ID			int,
-	Paq_Cli_ID			int
+	--Paq_Via_ID			int,
+	Paq_Cli_ID			int,
+	Paq_Com_id			int
 )
 --Creación tabla "Rutas"
 CREATE TABLE SFX.t_rutas (
@@ -138,7 +154,7 @@ CREATE TABLE SFX.t_viajes (
 	Via_Fecha_Salida			datetime,
 	Via_Fecha_Llegada			datetime,
 	Via_Fecha_Llegada_Estimada	datetime,
-	Via_Invalido				bit	  -- 1=Invalido, 0=valido
+	Via_Invalido				bit			-- 1=Invalido, 0=valido
 )
 --Creación tabla "Tipo Butacas"
 CREATE TABLE SFX.t_tipo_butacas (
@@ -158,7 +174,7 @@ CREATE TABLE SFX.t_butacas_viaje (
 	Buv_ID						int identity,
 	Buv_Via_ID					int,
 	Buv_But_ID					int,
-	Buv_Cli_ID					int,
+	--Buv_Cli_ID					int,
 	Buv_Fecha_Baja				datetime
 )
 --Creación tabla "Fabricantes"
@@ -180,8 +196,8 @@ CREATE TABLE SFX.t_formas_pago (
 --Creación tabla "Tipos de Tarjeta"
 CREATE TABLE SFX.t_tipo_tarjetas (
 	Tta_ID					int identity,
-	Tta_Nombre				nvarchar(255),
-	Tta_Cuotas				int
+	Tta_Nombre				nvarchar(255)
+	--Tta_Cuotas				int
 )
 --Creación tabla "Tarjetas"
 CREATE TABLE SFX.t_tarjetas (
@@ -190,25 +206,54 @@ CREATE TABLE SFX.t_tarjetas (
 --	Tar_Fecha_Emision		datetime,
 	Tar_Fecha_Vencimiento	datetime,
 	Tar_Codigo_Seg			nvarchar(3),
-	Tar_Tta_ID				int,
-	Tar_Cli_Id				int
+	Tar_Tta_ID				int
 )
+--Creación tabla "Tipos de Tarjeta Cuotas"
+CREATE TABLE SFX.t_tipo_tarjetas_cuotas (
+	Ttc_ID					int identity,
+	Ttc_Tta_ID				int,
+	Ttc_Cant_cuotas			int
+)
+
 --Creación tabla "Compras"
 CREATE TABLE SFX.t_compras (
 	Com_ID					int identity,
 	Com_Cli_ID				int,
 	Com_Via_ID				int,
 	Com_Fpa_ID				int,
-	Com_Tar_ID				int,
-	Com_Importe				numeric(18,2)
+	Com_Tar_ID				int
+	--Com_Importe				numeric(18,2)
 )
 --Creación tabla "Detalle de Compras"
-CREATE TABLE SFX.t_detalle_compras (
-	Dec_ID					int identity,
-	Dec_Com_ID				int,
-	Dec_Pas_Codigo			numeric(18,0),
-	Dec_Paq_Codigo			numeric(18,0)
+--CREATE TABLE SFX.t_detalle_compras (
+--	Dec_ID					int identity,
+--	Dec_Com_ID				int,
+--	Dec_Pas_Codigo			numeric(18,0),
+--	Dec_Paq_Codigo			numeric(18,0)
+--)
+
+--Creación tabla "Devoluciones"
+CREATE TABLE SFX.t_devoluciones (
+	Dev_ID					int identity,
+	Dev_Com_id				int,
+	Dev_motivo				NVARCHAR(255),
+	Dev_fecha				DATE
 )
+
+--Creación tabla "Detalle de las devoluciones"
+CREATE TABLE SFX.t_devolucion_pasaje (
+	Dps_ID					int identity,
+	Dps_Dev_ID				int,
+	Dps_pas_ID				numeric(18,0)
+)
+
+--Creación tabla "Detalle de las devoluciones"
+CREATE TABLE SFX.t_devolucion_paquete (
+	Dpq_ID					int identity,
+	Dpq_Dev_ID				int,
+	Dpq_paq_id				numeric(18,0)
+)
+
 --Creación tabla "Funcionalidades"
 CREATE TABLE SFX.t_funcionalidades (
 	Fun_Id				int identity,
@@ -250,6 +295,42 @@ CREATE TABLE SFX.t_func_rol(
 	Fxr_Fun_Id			int,
 	Fxr_Rol_Id			int
 )
+
+--Creación tabla "Premio"
+CREATE TABLE SFX.t_premio(
+	Pre_Id				int identity,
+	Pre_Descripcion		nvarchar(255),
+	Pre_Valor_puntos	int,
+	Pre_Stock			int,
+	Pre_fecha_baja		date
+)
+
+--Creación tabla "Premio canje"
+CREATE TABLE SFX.t_premio_canje(
+	pca_Id				int identity,
+	pca_pre_id			int,
+	pca_cli_id			int,
+	pca_puntos			int,	--Porque el Valor punto de un premio puede cambiar en t_premio
+	pca_cantidad		int,
+	pca_fecha			date
+)
+
+--Creación tabla "Premio canje"
+CREATE TABLE SFX.t_milla_detalle(
+	mde_Id				int identity,
+	mde_cli_id			int,
+	mde_milla			numeric(18,0),	
+	mde_pas_id			int,
+	mde_paq_id			int,
+	mde_fecha_alta		date,
+	mde_fecha_vig		date		--La vigencia es de 1 año
+)
+
+
+--| Ver el tema de una tabla mas para manejar los totales de puntos que tiene disponibles y cuantos canjeo
+--(tenemos el detalle de los canjes que realizo).
+
+
 
 /*---------------------AGREGAMOS PRIMARY KEYS---------------------*/
 --Agregamos Primary Key a tabla "Clientes"
@@ -294,6 +375,9 @@ ADD CONSTRAINT PK_t_modelos PRIMARY KEY(Mod_ID)
 --Agregamos Primary Key a tabla "Formas de Pago"
 ALTER TABLE SFX.t_formas_pago
 ADD CONSTRAINT PK_t_formas_pago PRIMARY KEY(Fpa_ID)
+--Agregamos Primary Key a tabla ""Tipo de Tarjeta Cuotas"
+ALTER TABLE SFX.t_tipo_tarjetas_cuotas
+ADD CONSTRAINT PK_t_tipo_tarjetas_cuotas PRIMARY KEY(Ttc_ID)
 --Agregamos Primary Key a tabla ""Tipo de Tarjeta"
 ALTER TABLE SFX.t_tipo_tarjetas
 ADD CONSTRAINT PK_t_tipo_tarjetas PRIMARY KEY(Tta_ID)
@@ -303,9 +387,18 @@ ADD CONSTRAINT PK_t_tarjetas PRIMARY KEY(Tar_ID)
 --Agregamos Primary Key a tabla ""Compras"
 ALTER TABLE SFX.t_compras
 ADD CONSTRAINT PK_t_compras PRIMARY KEY(Com_ID)
---Agregamos Primary Key a tabla ""Compras"
-ALTER TABLE SFX.t_detalle_compras
-ADD CONSTRAINT PK_t_detalle_compras PRIMARY KEY(Dec_ID)
+--Agregamos Primary Key a tabla "Devoluciones"
+ALTER TABLE SFX.t_devoluciones
+ADD CONSTRAINT PK_t_devoluciones PRIMARY KEY(Dev_ID)
+--Agregamos Primary Key a tabla "Devolucion pasaje"
+ALTER TABLE SFX.t_devolucion_pasaje
+ADD CONSTRAINT PK_t_devolucion_pasaje PRIMARY KEY(Dps_ID)
+--Agregamos Primary Key a tabla "Devolucion paquete"
+ALTER TABLE SFX.t_devolucion_paquete
+ADD CONSTRAINT PK_t_devolucion_paquete PRIMARY KEY(Dpq_ID)
+----Agregamos Primary Key a tabla ""Compras"
+--ALTER TABLE SFX.t_detalle_compras
+--ADD CONSTRAINT PK_t_detalle_compras PRIMARY KEY(Dec_ID)
 --Agregamos Primary Key a tabla "Funcionalidades"
 ALTER TABLE SFX.t_funcionalidades
 ADD CONSTRAINT PK_t_funcionalidades PRIMARY KEY(Fun_Id)
@@ -325,6 +418,12 @@ ADD CONSTRAINT PK_t_rol_usuario PRIMARY KEY(Rxu_Id)
 ALTER TABLE SFX.t_func_rol
 ADD CONSTRAINT PK_t_func_rol PRIMARY KEY(Fxr_Id)
 
+ALTER TABLE SFX.t_premio
+ADD CONSTRAINT PK_t_premio PRIMARY KEY(Pre_Id)
+
+ALTER TABLE SFX.t_premio_canje
+ADD CONSTRAINT PK_t_premio_canje PRIMARY KEY(Pca_Id)
+
 /*---------------------AGREGAMOS FOREIGN KEYS---------------------*/
 --Agregamos Foreign Key a tabla "Pasajes 01"
 ALTER TABLE SFX.t_pasajes
@@ -334,14 +433,22 @@ ADD CONSTRAINT FK_t_pasajes_01 FOREIGN KEY (Pas_Cli_ID)
 ALTER TABLE SFX.t_pasajes
 ADD CONSTRAINT FK_t_pasajes_02 FOREIGN KEY (Pas_But_ID) 
     REFERENCES SFX.t_butacas (But_ID) 
+--Agregamos Foreign Key a tabla "Pasajes 03"
+ALTER TABLE SFX.t_pasajes
+ADD CONSTRAINT FK_t_pasajes_03 FOREIGN KEY (Pas_Com_id) 
+    REFERENCES SFX.t_compras (Com_ID) 
 --Agregamos Foreign Key a tabla "Paquetes 01"
 ALTER TABLE SFX.t_paquetes
 ADD CONSTRAINT FK_t_paquetes_01 FOREIGN KEY (Paq_Cli_ID) 
     REFERENCES SFX.t_clientes (Cli_ID) 
 --Agregamos Foreign Key a tabla "Paquetes 02"
+--ALTER TABLE SFX.t_paquetes
+--ADD CONSTRAINT FK_t_paquetes_02 FOREIGN KEY (Paq_Via_ID) 
+--    REFERENCES SFX.t_viajes (Via_ID) 
+--Agregamos Foreign Key a tabla "Paquetes 02"
 ALTER TABLE SFX.t_paquetes
-ADD CONSTRAINT FK_t_paquetes_02 FOREIGN KEY (Paq_Via_ID) 
-    REFERENCES SFX.t_viajes (Via_ID) 
+ADD CONSTRAINT FK_t_paquetes_03 FOREIGN KEY (Paq_Com_id) 
+    REFERENCES SFX.t_compras (Com_id) 
 --Agregamos Foreign Key a tabla "Rutas 01"
 ALTER TABLE SFX.t_rutas
 ADD CONSTRAINT FK_t_rutas_01 FOREIGN KEY (Rut_Ser_ID) 
@@ -387,9 +494,9 @@ ALTER TABLE SFX.t_butacas_viaje
 ADD CONSTRAINT FK_t_butacas_viaje_02 FOREIGN KEY (Buv_But_ID) 
     REFERENCES SFX.t_butacas (But_ID)
 --Agregamos Foreign Key a tabla "Butacas Viaje 03"
-ALTER TABLE SFX.t_butacas_viaje
-ADD CONSTRAINT FK_t_butacas_viaje_03 FOREIGN KEY (Buv_Cli_ID) 
-    REFERENCES SFX.t_clientes (Cli_ID)	
+--ALTER TABLE SFX.t_butacas_viaje
+--ADD CONSTRAINT FK_t_butacas_viaje_03 FOREIGN KEY (Buv_Cli_ID) 
+--    REFERENCES SFX.t_clientes (Cli_ID)	
 --Agregamos Foreign Key a tabla "Clientes 01"
 ALTER TABLE SFX.t_clientes 
 ADD CONSTRAINT FK_t_clientes_01 FOREIGN KEY (Cli_Usu_Id) 
@@ -403,9 +510,17 @@ ALTER TABLE SFX.t_tarjetas
 ADD CONSTRAINT FK_t_tarjetas_01 FOREIGN KEY (Tar_Tta_ID) 
     REFERENCES SFX.t_tipo_tarjetas (Tta_ID)
 --Agregamos Foreign Key a tabla "Tarjetas 02"
-ALTER TABLE SFX.t_tarjetas 
-ADD CONSTRAINT FK_t_tarjetas_02 FOREIGN KEY (Tar_Cli_Id) 
-    REFERENCES SFX.t_clientes (Cli_Id)
+--ALTER TABLE SFX.t_tarjetas 
+--ADD CONSTRAINT FK_t_tarjetas_02 FOREIGN KEY (Tar_Com_Id) 
+--    REFERENCES SFX.t_compras (Com_Id)
+--Agregamos Foreign Key a tabla "Tipo Tarjetas Cuotas 01"
+ALTER TABLE SFX.t_tipo_tarjetas_cuotas 
+ADD CONSTRAINT FK_t_tipo_tarjetas_cuotas_01 FOREIGN KEY (Ttc_Tta_ID) 
+    REFERENCES SFX.t_tipo_tarjetas (Tta_Id)
+--Agregamos Foreign Key a tabla "Tarjetas 02"
+--ALTER TABLE SFX.t_tarjetas 
+--ADD CONSTRAINT FK_t_tarjetas_02 FOREIGN KEY (Tar_Cli_Id) 
+--    REFERENCES SFX.t_clientes (Cli_Id)
 --Agregamos Foreign Key a tabla "Compras 01"
 ALTER TABLE SFX.t_compras 
 ADD CONSTRAINT FK_t_compras_01 FOREIGN KEY (Com_Cli_ID) 
@@ -422,18 +537,33 @@ ADD CONSTRAINT FK_t_compras_03 FOREIGN KEY (Com_Fpa_ID)
 ALTER TABLE SFX.t_compras 
 ADD CONSTRAINT FK_t_compras_04 FOREIGN KEY (Com_Tar_ID) 
     REFERENCES SFX.t_tarjetas (Tar_ID)
---Agregamos Foreign Key a tabla "Detalle de Compras 01"
-ALTER TABLE SFX.t_detalle_compras 
-ADD CONSTRAINT FK_t_detalle_compras_01 FOREIGN KEY (Dec_Com_ID) 
+ALTER TABLE SFX.t_devoluciones 
+ADD CONSTRAINT FK_t_devoluciones_01 FOREIGN KEY (Dev_Com_ID) 
     REFERENCES SFX.t_compras (Com_ID)
---Agregamos Foreign Key a tabla "Detalle de Compras 02"
-ALTER TABLE SFX.t_detalle_compras 
-ADD CONSTRAINT FK_t_detalle_compras_02 FOREIGN KEY (Dec_Pas_Codigo) 
+ALTER TABLE SFX.t_devolucion_pasaje
+ADD CONSTRAINT FK_t_devolucion_pasaje_01 FOREIGN KEY (Dps_Dev_ID) 
+    REFERENCES SFX.t_devoluciones (Dev_ID)
+ALTER TABLE SFX.t_devolucion_pasaje 
+ADD CONSTRAINT FK_t_devolucion_pasaje_02 FOREIGN KEY (Dps_Pas_ID) 
     REFERENCES SFX.t_pasajes (Pas_Codigo)
---Agregamos Foreign Key a tabla "Detalle de Compras 03"
-ALTER TABLE SFX.t_detalle_compras 
-ADD CONSTRAINT FK_t_detalle_compras_03 FOREIGN KEY (Dec_Paq_Codigo) 
+ALTER TABLE SFX.t_devolucion_paquete 
+ADD CONSTRAINT FK_t_t_devolucion_paquete_01 FOREIGN KEY (Dpq_Dev_ID) 
+    REFERENCES SFX.t_devoluciones (Dev_ID)
+ALTER TABLE SFX.t_devolucion_paquete 
+ADD CONSTRAINT FK_t_devolucion_paquete_02 FOREIGN KEY (Dpq_Paq_ID) 
     REFERENCES SFX.t_paquetes (Paq_Codigo)
+--Agregamos Foreign Key a tabla "Detalle de Compras 01"
+--ALTER TABLE SFX.t_detalle_compras 
+--ADD CONSTRAINT FK_t_detalle_compras_01 FOREIGN KEY (Dec_Com_ID) 
+--    REFERENCES SFX.t_compras (Com_ID)
+--Agregamos Foreign Key a tabla "Detalle de Compras 02"
+--ALTER TABLE SFX.t_detalle_compras 
+--ADD CONSTRAINT FK_t_detalle_compras_02 FOREIGN KEY (Dec_Pas_Codigo) 
+--    REFERENCES SFX.t_pasajes (Pas_Codigo)
+--Agregamos Foreign Key a tabla "Detalle de Compras 03"
+--ALTER TABLE SFX.t_detalle_compras 
+--ADD CONSTRAINT FK_t_detalle_compras_03 FOREIGN KEY (Dec_Paq_Codigo) 
+--    REFERENCES SFX.t_paquetes (Paq_Codigo)
 --Agregamos Foreign Key a tabla "Roles por Usuario"
 ALTER TABLE SFX.t_rol_usuario
 ADD CONSTRAINT FK_rol_usuario_01 FOREIGN KEY (Rxu_Rol_Id) 
@@ -454,6 +584,18 @@ ADD CONSTRAINT FK_func_rol_01 FOREIGN KEY (Fxr_Fun_Id)
 ALTER TABLE SFX.t_func_rol
 ADD CONSTRAINT FK_func_rol_02 FOREIGN KEY (Fxr_Rol_Id) 
     REFERENCES SFX.t_roles (Rol_Id)
+ALTER TABLE SFX.t_premio_canje
+ADD CONSTRAINT FK_t_premio_canje_01 FOREIGN KEY (pca_pre_id) 
+    REFERENCES SFX.t_premio (Pre_Id)
+ALTER TABLE SFX.t_premio_canje
+ADD CONSTRAINT FK_t_premio_canje_02 FOREIGN KEY (pca_cli_id) 
+    REFERENCES SFX.t_clientes (Cli_Id)
+
+
+
+
+
+
 
 /*---------------------MIGRAMOS TABLA gd_Esquema.Maestra A LAS NUEVAS TABLAS---------------------*/
 
@@ -543,8 +685,11 @@ SELECT DISTINCT a.aeronave_modelo, b.Fab_ID
 FROM [gd_esquema].[Maestra] a, [SFX].t_fabricantes b
 WHERE a.Aeronave_Fabricante =  b.Fab_Nombre
 
---Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
+--Migramos datos de la tabla maestra a tabla "Forma de Pagos"-----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+INSERT INTO [SFX].[t_formas_pago] VALUES ('contado')
+INSERT INTO [SFX].[t_formas_pago] VALUES ('tarjeta_credito')
+
 --Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
@@ -555,6 +700,7 @@ WHERE a.Aeronave_Fabricante =  b.Fab_Nombre
 
 --Migramos datos de la tabla maestra a tabla "Clientes"---------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+SET NOCOUNT ON;
 DECLARE @cli_dni numeric(18,0), @cantidad_clientes int;
 
 --| Cursor principal para obtener la cantidad de repeticiones
@@ -596,7 +742,6 @@ DEALLOCATE clientes_cursor
 
 --Migramos datos de la tabla maestra a tabla "Rutas"------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-SET NOCOUNT ON;
 DECLARE @ruta_codigo numeric, @cantidad int;
 
 --| Cursor principal para obtener la cantidad de repeticiones
@@ -608,7 +753,7 @@ FROM (SELECT DISTINCT a.Ruta_Codigo,
 					  a.Ruta_Ciudad_Destino
 	   FROM [gd_esquema].Maestra a) b
 GROUP BY b.Ruta_Codigo
-ORDER BY b.Ruta_Codigo;
+--ORDER BY b.Ruta_Codigo;
 
 
 OPEN rutas_cursor
@@ -708,7 +853,7 @@ DECLARE butaca_cursor CURSOR FOR
 	select distinct Aeronave_Matricula, Butaca_Nro, Butaca_Piso, Butaca_Tipo
 	from gd_esquema.Maestra
 	where Butaca_Tipo <> '0' -- si butaca_tipo es distinto a cero entonces es pasaje y no encomienda
-	order by Aeronave_Matricula, Butaca_Nro
+	--order by Aeronave_Matricula, Butaca_Nro
 
 OPEN butaca_cursor
 
@@ -733,12 +878,19 @@ DEALLOCATE butaca_cursor
 
 DECLARE
 --@ruta_codigo numeric, 
-@aero_matricula nvarchar(255), @tipoServicio nvarchar(255), @fechSalida datetime, @fechLlegadaEstimada datetime, @fechLlegada datetime,
-@duplic int, @ID_tipoServAeronave int, @ID_tipoServRuta int, @Id_aeronave int, @Id_ruta int
+@aero_matricula nvarchar(255), 
+@tipoServicio nvarchar(255), 
+@fechSalida datetime, 
+@fechLlegadaEstimada datetime, 
+@fechLlegada datetime,
+@duplic int, 
+@ID_tipoServAeronave int, 
+@ID_tipoServRuta int, 
+@Id_aeronave int, @Id_ruta int
 
 DECLARE cursor_viajes CURSOR FOR
 select distinct ruta_codigo,Aeronave_Matricula, Tipo_Servicio, FechaSalida, Fecha_LLegada_Estimada, FechaLLegada from gd_esquema.Maestra 
-order by ruta_codigo,Aeronave_Matricula, Tipo_Servicio;
+--order by ruta_codigo,Aeronave_Matricula, Tipo_Servicio;
 
 OPEN cursor_viajes
 
@@ -783,6 +935,122 @@ END
 
 CLOSE cursor_viajes
 DEALLOCATE cursor_viajes
+
+--COMPRAR  !!!!REVISAR.....................
+--
+/*
+DECLARE
+@Cli_Dni numeric(18,0),
+@Cli_nombre nvarchar(255), 
+@Cli_apellido nvarchar(255), 
+@CodigoPasaje numeric(18,0), 
+@pasaje_fecha datetime, 
+@pasaje_precio  numeric(18,2), 
+@nroButaca  numeric(18,0), 
+@MatriculaAeronave nvarchar(255),
+@Id_aeronave int, 
+@id_butaca int, 
+@id_cliente int, 
+@fecha_baja datetime,
+@Ciudad_origen nvarchar(255),
+@Ciudad_Destino nvarchar(255),
+@tipo_servicio nvarchar(255),
+@ruta_codigo numeric(18,0),
+@id_ruta  int,
+@id_tipo_servicio int,
+@id_ciudad_origen int,
+@id_ciudad_destino int,
+@id_viaje	int,
+@fecha_salida datetime,
+@fecha_llegada datetime,
+@fecha_llegada_estimada datetime,
+@paquete_codigo numeric(18,0),
+@paquete_fecha datetime,
+@paquete_KG numeric(18,0),
+@paquete_precio numeric(18,0),
+@id_compra int
+
+
+DECLARE CURSOR_PASAJES CURSOR FAST_FORWARD FOR 
+	SELECT Cli_Dni, Cli_Nombre, Cli_apellido,Pasaje_Codigo, Pasaje_FechaCompra, Pasaje_Precio, Butaca_Nro, Aeronave_Matricula,
+	       Paquete_Codigo, Paquete_FechaCompra, Paquete_KG, Paquete_Precio,
+	       Ruta_Codigo, Ruta_Ciudad_Origen, Ruta_Ciudad_Destino, Tipo_Servicio , FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
+	FROM gd_esquema.Maestra;
+
+
+OPEN CURSOR_PASAJES
+
+FETCH NEXT FROM CURSOR_PASAJES
+INTO @Cli_Dni, @Cli_nombre, @Cli_apellido,@CodigoPasaje, @pasaje_fecha, @pasaje_precio, @nroButaca, @MatriculaAeronave,
+     @paquete_codigo, @paquete_fecha,@paquete_KG, @paquete_precio, 
+     @ruta_codigo,@Ciudad_origen,@Ciudad_Destino,@tipo_servicio,@fecha_salida,@fecha_llegada,@fecha_llegada_estimada
+
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+		--Obtenemos los valores necesarios para insertar en compra, pasaje y/o paquete.
+
+		SET @Id_aeronave= (select Aer_ID from SFX.t_aeronaves where Aer_Matricula = @MatriculaAeronave)
+		SET @id_butaca  = (select But_ID from SFX.t_butacas   where But_Aer_ID=@Id_aeronave and But_Numero = @nroButaca)
+		SET @id_ciudad_origen = (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = @Ciudad_origen)
+		SET @id_ciudad_destino = (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = @Ciudad_Destino)
+		SET @id_tipo_servicio  = (select Ser_ID from [SFX].[t_servicios] where Ser_Descripcion = @tipo_servicio)
+		SET @id_ruta = (select Rut_ID from [SFX].[t_rutas] where Rut_Codigo = @ruta_codigo
+		                AND Rut_Cia_ID_Destino = @id_ciudad_destino
+						AND Rut_Cia_ID_Origen =  @id_ciudad_origen
+						AND Rut_Ser_ID = @id_tipo_servicio)
+		SET @id_viaje = (select Via_ID from [SFX].[t_viajes] 
+		                 where Via_Aer_ID = @Id_aeronave
+						 and Via_Rut_ID = @id_ruta
+						 and Via_Fecha_Salida = @fecha_salida
+						 and Via_Fecha_Llegada = @fecha_llegada
+						 and Via_Fecha_Llegada_Estimada = @fecha_llegada_estimada)
+
+
+		SELECT TOP 1 @fecha_baja =  Cli_Fecha_Baja, @id_cliente = Cli_ID FROM SFX.t_clientes
+		
+		--Verificamos si el cliente es invalido(fecha de baja)
+		IF @fecha_baja IS NOT NULL
+			SET @id_cliente = (SELECT Cli_ID FROM SFX.t_clientes  
+								WHERE Cli_Dni = @Cli_Dni
+								AND Cli_Nombre = @Cli_nombre 
+								AND Cli_Apellido=@Cli_apellido
+								)
+			
+		
+		INSERT INTO [SFX].[t_compras] 
+		VALUES (@id_cliente, @id_viaje, 1, NULL)
+
+		--Guardamos el id_compra generado
+		SET @id_compra = @@IDENTITY
+
+		--Si tiene precio de pasaje insert en t_pasaje
+		IF @pasaje_precio > 0 
+
+
+			INSERT INTO [SFX].[t_pasajes] 
+			VALUES (@CodigoPasaje,@pasaje_precio,@pasaje_fecha,NULL,@id_butaca,@id_cliente,@id_compra)
+			--ver si corresponde invalidar la compra completa
+			--en el paquete no tenemos un campo de estado o fecha de baja. VER
+
+		--Tiene precio de paquete insert en t_paquete
+		ELSE
+
+			INSERT INTO [SFX].[t_paquetes]
+			VALUES (@paquete_codigo,@paquete_precio,@paquete_KG,@paquete_fecha,@id_cliente,@id_compra)
+     
+FETCH NEXT FROM CURSOR_PASAJES 
+INTO @Cli_Dni, @Cli_nombre, @Cli_apellido,@CodigoPasaje, @pasaje_fecha, @pasaje_precio, @nroButaca, @MatriculaAeronave,
+	 @paquete_codigo, @paquete_fecha,@paquete_KG, @paquete_precio,
+     @ruta_codigo,@Ciudad_origen,@Ciudad_Destino,@tipo_servicio,@fecha_salida,@fecha_llegada,@fecha_llegada_estimada
+
+END
+
+CLOSE CURSOR_PASAJES
+DEALLOCATE CURSOR_PASAJES
+*/
+
+
 
 /*---------------------CREACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
 
