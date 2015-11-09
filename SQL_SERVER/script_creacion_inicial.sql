@@ -17,8 +17,6 @@ IF OBJECT_ID('SFX.t_devoluciones') IS NOT NULL
 DROP TABLE SFX.t_devoluciones
 IF OBJECT_ID('SFX.t_butacas_viaje') IS NOT NULL
 DROP TABLE SFX.t_butacas_viaje 
---IF OBJECT_ID('SFX.t_detalle_compras') IS NOT NULL
---DROP TABLE SFX.t_detalle_compras
 IF OBJECT_ID('SFX.t_pasajes') IS NOT NULL
 DROP TABLE SFX.t_pasajes
 IF OBJECT_ID('SFX.t_paquetes') IS NOT NULL
@@ -88,8 +86,8 @@ CREATE TABLE SFX.t_clientes (
 	Cli_Telefono		numeric(18,0) NULL,
 	Cli_Mail			nvarchar(255) NULL,
 	Cli_Fecha_Nac		datetime NULL,
-	Cli_Fecha_Baja		datetime,
-	Cli_Usu_Id			int
+	Cli_Fecha_Baja		datetime
+	
 )
 --Creación tabla "Pasajes"
 CREATE TABLE SFX.t_pasajes (
@@ -224,13 +222,6 @@ CREATE TABLE SFX.t_compras (
 	Com_Tar_ID				int
 	--Com_Importe				numeric(18,2)
 )
---Creación tabla "Detalle de Compras"
---CREATE TABLE SFX.t_detalle_compras (
---	Dec_ID					int identity,
---	Dec_Com_ID				int,
---	Dec_Pas_Codigo			numeric(18,0),
---	Dec_Paq_Codigo			numeric(18,0)
---)
 
 --Creación tabla "Devoluciones"
 CREATE TABLE SFX.t_devoluciones (
@@ -327,11 +318,6 @@ CREATE TABLE SFX.t_milla_detalle(
 )
 
 
---| Ver el tema de una tabla mas para manejar los totales de puntos que tiene disponibles y cuantos canjeo
---(tenemos el detalle de los canjes que realizo).
-
-
-
 /*---------------------AGREGAMOS PRIMARY KEYS---------------------*/
 --Agregamos Primary Key a tabla "Clientes"
 ALTER TABLE SFX.t_clientes
@@ -396,9 +382,6 @@ ADD CONSTRAINT PK_t_devolucion_pasaje PRIMARY KEY(Dps_ID)
 --Agregamos Primary Key a tabla "Devolucion paquete"
 ALTER TABLE SFX.t_devolucion_paquete
 ADD CONSTRAINT PK_t_devolucion_paquete PRIMARY KEY(Dpq_ID)
-----Agregamos Primary Key a tabla ""Compras"
---ALTER TABLE SFX.t_detalle_compras
---ADD CONSTRAINT PK_t_detalle_compras PRIMARY KEY(Dec_ID)
 --Agregamos Primary Key a tabla "Funcionalidades"
 ALTER TABLE SFX.t_funcionalidades
 ADD CONSTRAINT PK_t_funcionalidades PRIMARY KEY(Fun_Id)
@@ -441,10 +424,6 @@ ADD CONSTRAINT FK_t_pasajes_03 FOREIGN KEY (Pas_Com_id)
 ALTER TABLE SFX.t_paquetes
 ADD CONSTRAINT FK_t_paquetes_01 FOREIGN KEY (Paq_Cli_ID) 
     REFERENCES SFX.t_clientes (Cli_ID) 
---Agregamos Foreign Key a tabla "Paquetes 02"
---ALTER TABLE SFX.t_paquetes
---ADD CONSTRAINT FK_t_paquetes_02 FOREIGN KEY (Paq_Via_ID) 
---    REFERENCES SFX.t_viajes (Via_ID) 
 --Agregamos Foreign Key a tabla "Paquetes 02"
 ALTER TABLE SFX.t_paquetes
 ADD CONSTRAINT FK_t_paquetes_03 FOREIGN KEY (Paq_Com_id) 
@@ -493,14 +472,6 @@ ADD CONSTRAINT FK_t_butacas_viaje_01 FOREIGN KEY (Buv_Via_ID)
 ALTER TABLE SFX.t_butacas_viaje
 ADD CONSTRAINT FK_t_butacas_viaje_02 FOREIGN KEY (Buv_But_ID) 
     REFERENCES SFX.t_butacas (But_ID)
---Agregamos Foreign Key a tabla "Butacas Viaje 03"
---ALTER TABLE SFX.t_butacas_viaje
---ADD CONSTRAINT FK_t_butacas_viaje_03 FOREIGN KEY (Buv_Cli_ID) 
---    REFERENCES SFX.t_clientes (Cli_ID)	
---Agregamos Foreign Key a tabla "Clientes 01"
-ALTER TABLE SFX.t_clientes 
-ADD CONSTRAINT FK_t_clientes_01 FOREIGN KEY (Cli_Usu_Id) 
-    REFERENCES SFX.t_usuarios (Usu_Id)
 --Agregamos Foreign Key a tabla "Modelos 01"
 ALTER TABLE SFX.t_modelos 
 ADD CONSTRAINT FK_t_modelos_01 FOREIGN KEY (Mod_Fab_ID) 
@@ -509,18 +480,10 @@ ADD CONSTRAINT FK_t_modelos_01 FOREIGN KEY (Mod_Fab_ID)
 ALTER TABLE SFX.t_tarjetas 
 ADD CONSTRAINT FK_t_tarjetas_01 FOREIGN KEY (Tar_Tta_ID) 
     REFERENCES SFX.t_tipo_tarjetas (Tta_ID)
---Agregamos Foreign Key a tabla "Tarjetas 02"
---ALTER TABLE SFX.t_tarjetas 
---ADD CONSTRAINT FK_t_tarjetas_02 FOREIGN KEY (Tar_Com_Id) 
---    REFERENCES SFX.t_compras (Com_Id)
 --Agregamos Foreign Key a tabla "Tipo Tarjetas Cuotas 01"
 ALTER TABLE SFX.t_tipo_tarjetas_cuotas 
 ADD CONSTRAINT FK_t_tipo_tarjetas_cuotas_01 FOREIGN KEY (Ttc_Tta_ID) 
     REFERENCES SFX.t_tipo_tarjetas (Tta_Id)
---Agregamos Foreign Key a tabla "Tarjetas 02"
---ALTER TABLE SFX.t_tarjetas 
---ADD CONSTRAINT FK_t_tarjetas_02 FOREIGN KEY (Tar_Cli_Id) 
---    REFERENCES SFX.t_clientes (Cli_Id)
 --Agregamos Foreign Key a tabla "Compras 01"
 ALTER TABLE SFX.t_compras 
 ADD CONSTRAINT FK_t_compras_01 FOREIGN KEY (Com_Cli_ID) 
@@ -552,18 +515,6 @@ ADD CONSTRAINT FK_t_t_devolucion_paquete_01 FOREIGN KEY (Dpq_Dev_ID)
 ALTER TABLE SFX.t_devolucion_paquete 
 ADD CONSTRAINT FK_t_devolucion_paquete_02 FOREIGN KEY (Dpq_Paq_ID) 
     REFERENCES SFX.t_paquetes (Paq_Codigo)
---Agregamos Foreign Key a tabla "Detalle de Compras 01"
---ALTER TABLE SFX.t_detalle_compras 
---ADD CONSTRAINT FK_t_detalle_compras_01 FOREIGN KEY (Dec_Com_ID) 
---    REFERENCES SFX.t_compras (Com_ID)
---Agregamos Foreign Key a tabla "Detalle de Compras 02"
---ALTER TABLE SFX.t_detalle_compras 
---ADD CONSTRAINT FK_t_detalle_compras_02 FOREIGN KEY (Dec_Pas_Codigo) 
---    REFERENCES SFX.t_pasajes (Pas_Codigo)
---Agregamos Foreign Key a tabla "Detalle de Compras 03"
---ALTER TABLE SFX.t_detalle_compras 
---ADD CONSTRAINT FK_t_detalle_compras_03 FOREIGN KEY (Dec_Paq_Codigo) 
---    REFERENCES SFX.t_paquetes (Paq_Codigo)
 --Agregamos Foreign Key a tabla "Roles por Usuario"
 ALTER TABLE SFX.t_rol_usuario
 ADD CONSTRAINT FK_rol_usuario_01 FOREIGN KEY (Rxu_Rol_Id) 
@@ -592,11 +543,6 @@ ADD CONSTRAINT FK_t_premio_canje_02 FOREIGN KEY (pca_cli_id)
     REFERENCES SFX.t_clientes (Cli_Id)
 
 
-
-
-
-
-
 /*---------------------MIGRAMOS TABLA gd_Esquema.Maestra A LAS NUEVAS TABLAS---------------------*/
 
 --Migramos datos de la tabla maestra a tabla "Servicios"--------------------------------------------------------------------------------------------------
@@ -622,7 +568,6 @@ INSERT INTO SFX.t_ciudades_aeropuertos (Cia_Descripcion)
 			SELECT DISTINCT Ruta_Ciudad_Destino
 			  FROM gd_esquema.Maestra
 			 WHERE Ruta_Ciudad_Origen IS NOT NULL
-			 ORDER BY 1
 
 --Migramos datos de la tabla maestra a tabla "t_fabricantes"----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -697,47 +642,42 @@ INSERT INTO [SFX].[t_formas_pago] VALUES ('tarjeta_credito')
 --Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 --Migramos datos de la tabla maestra a tabla "Clientes"---------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-SET NOCOUNT ON;
-DECLARE @cli_dni numeric(18,0), @cantidad_clientes int;
-
---| Cursor principal para obtener la cantidad de repeticiones
-DECLARE clientes_cursor CURSOR FOR 
- SELECT Cli_Dni, COUNT(*)
-   FROM	(SELECT Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
+SELECT Cli_Dni, COUNT(*) repeticiones
+INTO SFX.#tpm_pereticiones
+FROM	(SELECT Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
 		   FROM gd_esquema.Maestra
-		  WHERE Cli_Dni IS NOT NULL
-		  GROUP BY Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac) m
-  GROUP BY Cli_Dni;
+GROUP BY Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac) m
+GROUP BY Cli_Dni;
 
-OPEN clientes_cursor
 
-FETCH NEXT FROM clientes_cursor INTO @cli_dni, @cantidad_clientes
+INSERT INTO SFX.t_clientes (Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac, Cli_Fecha_Baja)
+SELECT DISTINCT m1.Cli_Nombre, 
+				m1.Cli_Apellido, 
+				m1.Cli_Dni, 
+				m1.Cli_Dir, 
+				m1.Cli_Telefono, 
+				m1.Cli_Mail, 
+				m1.Cli_Fecha_Nac,
+				CASE 
+					WHEN r.repeticiones > 1 
+						THEN getdate()
+					ELSE
+						null
+				END baja
+FROM gd_esquema.Maestra m1,
+     SFX.#tpm_pereticiones r
+WHERE m1.Cli_Dni = r.Cli_Dni
 
-WHILE @@FETCH_STATUS = 0
-BEGIN
+DROP TABLE GSFX.#tpm_pereticiones
 
-	IF @cantidad_clientes = 1 --VALIDOS
-	BEGIN
-		INSERT INTO SFX.t_clientes (Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac, Cli_Fecha_Baja, Cli_Usu_Id)
-			 			 SELECT DISTINCT Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac, NULL, NULL
-						   FROM gd_esquema.Maestra
-						  WHERE Cli_Dni = @cli_dni;
-	END 
-	ELSE	-- NO VALIDOS
-	BEGIN
-		INSERT INTO SFX.t_clientes (Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac, Cli_Fecha_Baja, Cli_Usu_Id)
-			 			 SELECT DISTINCT Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac, getdate() /*DADO DE BAJA O INVALIDO*/, NULL
-						   FROM gd_esquema.Maestra
-						  WHERE Cli_Dni = @cli_dni;
-	END
-
-	FETCH NEXT FROM clientes_cursor INTO @cli_dni, @cantidad_clientes
-END 
-CLOSE clientes_cursor
-DEALLOCATE clientes_cursor
+--Migramos datos de la tabla maestra a tabla "t_tipo_butacas"---------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+INSERT INTO [SFX].[t_tipo_butacas] 
+SELECT DISTINCT Butaca_Tipo
+FROM [gd_esquema].[Maestra]
+WHERE Butaca_Tipo <> '0'
 
 
 --Migramos datos de la tabla maestra a tabla "Rutas"------------------------------------------------------------------------------------------------------
@@ -801,12 +741,6 @@ END
 CLOSE rutas_cursor;
 DEALLOCATE rutas_cursor
 
---Migramos datos de la tabla maestra a tabla "t_tipo_butacas"---------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-INSERT INTO [SFX].[t_tipo_butacas] 
-SELECT DISTINCT Butaca_Tipo
-FROM [gd_esquema].[Maestra]
-WHERE Butaca_Tipo <> '0'
 
 --Migramos datos de la tabla maestra a tabla "t_aeronaves"------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
