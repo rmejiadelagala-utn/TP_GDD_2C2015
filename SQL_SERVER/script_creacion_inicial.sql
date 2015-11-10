@@ -670,7 +670,7 @@ FROM gd_esquema.Maestra m1,
      SFX.#tpm_pereticiones r
 WHERE m1.Cli_Dni = r.Cli_Dni
 
-DROP TABLE GSFX.#tpm_pereticiones
+DROP TABLE SFX.#tpm_pereticiones
 
 --Migramos datos de la tabla maestra a tabla "t_tipo_butacas"---------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
