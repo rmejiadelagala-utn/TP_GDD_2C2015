@@ -767,7 +767,7 @@ BEGIN
 	SET @serv_id   = (select Ser_ID from SFX.t_servicios where Ser_Descripcion=@servicio)
 
 	INSERT INTO SFX.t_aeronaves 
-			   values ( @aer_matricula, @modelo_id, @aer_kg, '01-01-2000',NULL,NULL,NULL,@serv_id) 
+			   values ( @aer_matricula, @modelo_id, @aer_kg, CONVERT(datetime,'01-01-2000',121),NULL,NULL,NULL,@serv_id) 
 
 	FETCH NEXT FROM aeronave_cursor INTO @aer_matricula, @modelo, @fabricante, @aer_kg, @servicio
 END 
