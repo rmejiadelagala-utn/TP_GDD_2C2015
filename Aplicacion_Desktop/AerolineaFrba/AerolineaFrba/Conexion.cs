@@ -15,7 +15,7 @@ namespace AerolineaFrba
         public Conexion()
         {
             
-            //cn = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD2C2015;User ID=gd;Password=gd2015");
+           // cn = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD2C2015;User ID=gd;Password=gd2015");
             cn = new SqlConnection(miConexion);
         }
 
@@ -62,7 +62,35 @@ namespace AerolineaFrba
             return resultado;
 
         }
+        public DataTable EjecutarConsulta(String query)
+        {
+            cmd.CommandText = query;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = cn;
+            DataSet _dataSet = new DataSet();
 
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
 
+                adapter.Fill(_dataSet);
+            }
+
+            return _dataSet.Tables[0];
+        }
+
+        public void LoadDataGridView(DataGridView dgv)
+        {
+            try
+            {
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                dgv.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo cargar el DataGridView " + ex.ToString());
+            }
+        }
     }
 }

@@ -66,11 +66,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Aeronave\Form1.cs">
+    <Compile Include="Abm Aeronave\FrmListadoAeronave.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Aeronave\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Aeronave\FrmListadoAeronave.Designer.cs">
+      <DependentUpon>FrmListadoAeronave.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Ciudad\FrmBaja.cs">
       <SubType>Form</SubType>
@@ -114,11 +114,11 @@
     <Compile Include="Canje Millas\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Compra\Form1.cs">
+    <Compile Include="Compra\FrmPasaje.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Compra\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Compra\FrmPasaje.Designer.cs">
+      <DependentUpon>FrmPasaje.cs</DependentUpon>
     </Compile>
     <Compile Include="Conexion.cs" />
     <Compile Include="Consulta Millas\Form1.cs">
@@ -210,6 +210,9 @@
     <EmbeddedResource Include="Abm Rol\FrmListadoRol.resx">
       <DependentUpon>FrmListadoRol.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Compra\FrmPasaje.resx">
+      <DependentUpon>FrmPasaje.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Devolucion\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -236,6 +239,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Registro de Usuario\FrmUsuarios.resx">
       <DependentUpon>FrmUsuarios.cs</DependentUpon>
@@ -281,7 +285,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Recursos\aerolineaFRBA.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

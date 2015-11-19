@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AerolineaFrba.Principal;
 using AerolineaFrba.Abm_Ciudad;
+using AerolineaFrba.Compra;
 
 namespace AerolineaFrba.Principal
 {
@@ -77,6 +78,17 @@ namespace AerolineaFrba.Principal
             FrmListadoCiudad c = new FrmListadoCiudad();
             c.Show();
 
+        }
+
+        private void realizarComprarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+  
+        }
+
+        private void pasajesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmPasaje pas = new FrmPasaje();
+            pas.Show();
         }
     }
 }
