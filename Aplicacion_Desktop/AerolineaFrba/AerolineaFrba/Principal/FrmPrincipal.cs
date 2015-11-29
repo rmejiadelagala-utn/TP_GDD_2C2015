@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using AerolineaFrba.Principal;
 using AerolineaFrba.Abm_Ciudad;
 using AerolineaFrba.Compra;
+using AerolineaFrba.Abm_Aeronave;
 
 namespace AerolineaFrba.Principal
 {
@@ -89,6 +90,12 @@ namespace AerolineaFrba.Principal
         {
             FrmPasaje pas = new FrmPasaje();
             pas.Show();
+        }
+
+        private void altaAeronaveMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAltaAeronave avion = new FrmAltaAeronave();
+            avion.Show();
         }
     }
 }

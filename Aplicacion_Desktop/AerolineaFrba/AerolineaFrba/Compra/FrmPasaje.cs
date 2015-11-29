@@ -77,18 +77,38 @@ namespace AerolineaFrba.Compra
             Object ciudadOirgenId = cmbBoxCiudadOrigen.SelectedValue;
             Object ciudadDestinoId = cmbBoxCiudadDestino.SelectedValue;
             DateTime fechaVuelo = new DateTime();
+            DateTime fechaActual = new DateTime();
             fechaVuelo = dateTimePicker1.Value;
-            try
+            fechaActual = DateTime.Now;
+            int fechaValida = DateTime.Compare(fechaVuelo, fechaActual);
+            if (fechaValida > 0)
             {
-                MessageBox.Show("El valor de cia_id origen seleccionado es: " + ciudadOirgenId.ToString() + "\n"
-                + "El valor de cia_id destino seleccionado es: " + ciudadDestinoId.ToString() + "\n"
-                + "La fecha seleccionada es: " + fechaVuelo.ToShortDateString());
+                try
+                {
+                    MessageBox.Show("El valor de cia_id origen seleccionado es: " + ciudadOirgenId.ToString() + "\n"
+                    + "El valor de cia_id destino seleccionado es: " + ciudadDestinoId.ToString() + "\n"
+                    + "La fecha seleccionada es: " + fechaVuelo.ToShortDateString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("excepcion: " + ex.ToString());
+                }
+                try
+                {
+                    this.CargarDataGrid(ciudadOirgenId.ToString(), ciudadDestinoId.ToString(), fechaVuelo.ToShortDateString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("excepcion: " + ex.ToString());
+                }
+
+
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("excepcion: " + ex.ToString());
+                MessageBox.Show("Debe ingresar una fecha de vuelo valida, posterior a la fecha actual");
             }
-            this.CargarDataGrid(ciudadOirgenId.ToString() ,ciudadDestinoId.ToString(),fechaVuelo.ToShortDateString());
+
         }
 
         private void CargarDataGrid(String ciudadOrigenId, String ciudadDestinoId, String fechaVuelo)

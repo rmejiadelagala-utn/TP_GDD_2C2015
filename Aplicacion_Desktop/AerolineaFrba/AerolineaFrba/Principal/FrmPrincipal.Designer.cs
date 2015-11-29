@@ -41,6 +41,11 @@
             this.pasajesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.encomiendaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aeronavesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.altaAeronaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificacionToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.bajaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.listadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,6 +67,7 @@
             this.rolesToolStripMenuItem,
             this.tiposDeServiciosToolStripMenuItem,
             this.ciudadesToolStripMenuItem,
+            this.aeronavesToolStripMenuItem,
             this.realizarComprarToolStripMenuItem});
             this.funcionalidadesToolStripMenuItem.Name = "funcionalidadesToolStripMenuItem";
             this.funcionalidadesToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
@@ -97,28 +103,28 @@
             // altaModificaciónToolStripMenuItem
             // 
             this.altaModificaciónToolStripMenuItem.Name = "altaModificaciónToolStripMenuItem";
-            this.altaModificaciónToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.altaModificaciónToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.altaModificaciónToolStripMenuItem.Text = "Alta";
             this.altaModificaciónToolStripMenuItem.Click += new System.EventHandler(this.altaModificaciónToolStripMenuItem_Click);
             // 
             // modificacionToolStripMenuItem
             // 
             this.modificacionToolStripMenuItem.Name = "modificacionToolStripMenuItem";
-            this.modificacionToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.modificacionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.modificacionToolStripMenuItem.Text = "Modificación";
             this.modificacionToolStripMenuItem.Click += new System.EventHandler(this.modificacionToolStripMenuItem_Click);
             // 
             // bajaToolStripMenuItem
             // 
             this.bajaToolStripMenuItem.Name = "bajaToolStripMenuItem";
-            this.bajaToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.bajaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bajaToolStripMenuItem.Text = "Baja";
             this.bajaToolStripMenuItem.Click += new System.EventHandler(this.bajaToolStripMenuItem_Click);
             // 
             // listadoToolStripMenuItem1
             // 
             this.listadoToolStripMenuItem1.Name = "listadoToolStripMenuItem1";
-            this.listadoToolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
+            this.listadoToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.listadoToolStripMenuItem1.Text = "Listado";
             this.listadoToolStripMenuItem1.Click += new System.EventHandler(this.listadoToolStripMenuItem1_Click);
             // 
@@ -150,6 +156,42 @@
             this.ayudaToolStripMenuItem.Name = "ayudaToolStripMenuItem";
             this.ayudaToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.ayudaToolStripMenuItem.Text = "Ayuda";
+            // 
+            // aeronavesToolStripMenuItem
+            // 
+            this.aeronavesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.altaAeronaveMenuItem,
+            this.modificacionToolStripMenuItem1,
+            this.bajaToolStripMenuItem1,
+            this.listadoToolStripMenuItem});
+            this.aeronavesToolStripMenuItem.Name = "aeronavesToolStripMenuItem";
+            this.aeronavesToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.aeronavesToolStripMenuItem.Text = "Aeronaves";
+            // 
+            // altaAeronaveMenuItem
+            // 
+            this.altaAeronaveMenuItem.Name = "altaAeronaveMenuItem";
+            this.altaAeronaveMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.altaAeronaveMenuItem.Text = "Alta";
+            this.altaAeronaveMenuItem.Click += new System.EventHandler(this.altaAeronaveMenuItem_Click);
+            // 
+            // modificacionToolStripMenuItem1
+            // 
+            this.modificacionToolStripMenuItem1.Name = "modificacionToolStripMenuItem1";
+            this.modificacionToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.modificacionToolStripMenuItem1.Text = "Modificacion";
+            // 
+            // bajaToolStripMenuItem1
+            // 
+            this.bajaToolStripMenuItem1.Name = "bajaToolStripMenuItem1";
+            this.bajaToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.bajaToolStripMenuItem1.Text = "Baja";
+            // 
+            // listadoToolStripMenuItem
+            // 
+            this.listadoToolStripMenuItem.Name = "listadoToolStripMenuItem";
+            this.listadoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listadoToolStripMenuItem.Text = "Listado";
             // 
             // FrmPrincipal
             // 
@@ -187,6 +229,11 @@
         private System.Windows.Forms.ToolStripMenuItem realizarComprarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasajesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem encomiendaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aeronavesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem altaAeronaveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificacionToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem bajaToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem listadoToolStripMenuItem;
 
     }
 }

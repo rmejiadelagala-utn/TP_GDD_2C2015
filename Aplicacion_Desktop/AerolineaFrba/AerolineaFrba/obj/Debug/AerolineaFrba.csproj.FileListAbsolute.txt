@@ -64,3 +64,5 @@ C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.exe
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.pdb
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Compra.FrmPasaje.resources
+C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmAltaAeronave.resources
+C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmListadoAeronave.resources

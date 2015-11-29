@@ -11,7 +11,9 @@ DROP PROCEDURE SFX.ModificarCiudad
 IF OBJECT_ID('SFX.BajaCiudad') IS NOT NULL
 DROP PROCEDURE SFX.BajaCiudad
 IF OBJECT_ID('SFX.GetViajesDisponibles') IS NOT NULL
-DROP PROCEDURE SFX.BajaCiudad
+DROP PROCEDURE SFX.GetViajesDisponibles
+IF OBJECT_ID('SFX.KgDisponibles') IS NOT NULL
+DROP FUNCTION SFX.KgDisponibles
 
 
 /****** Object:  UserDefinedFunction [sfx].[ExisteUsuario]    Script Date: 07/11/2015 10:39:20 a.m. ******/
@@ -109,6 +111,43 @@ END CATCH
 GO
 
 
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date, ,>
+-- Description:	Dado un viaje calcula los kg que quedan aún disponibles para la venta de paquetes
+--				esta funcion es usada dentro del procedure GetViajesDisponibles -> ABM-Compras 
+-- =============================================
+CREATE FUNCTION SFX.KgDisponibles 
+(
+	-- Add the parameters for the function here
+	 @IdViaje int
+)
+RETURNS int
+AS
+BEGIN
+	-- Declare the return variable here
+	DECLARE 
+		@KG_Usados int,
+		@KG_Totales int
+	
+	-- Add the T-SQL statements to compute the return value here
+	SELECT @KG_Usados= ISNULL(SUM(Paq_KG),0) 
+	FROM SFX.t_viajes, SFX.t_compras,SFX.t_paquetes
+	WHERE Via_ID=@IdViaje
+	and Via_ID=Com_Via_ID
+	and Paq_Com_id=Com_ID;
+	
+	SELECT @KG_Totales= Aer_KG_Disponibles from SFX.t_aeronaves,SFX.t_viajes --Kg Totales en Aeronave
+			where Via_ID=@IdViaje
+			and Via_Aer_ID=Aer_ID;
+
+	-- Return the result of the function
+	RETURN (@KG_Totales - @KG_Usados)
+
+END
+GO
+
+
 CREATE PROCEDURE [SFX].[BajaCiudad] 
 
 	@ID				int
@@ -148,15 +187,21 @@ BEGIN
 	SET NOCOUNT ON;
 	SET @varfecha = (select CAST(@FechaVuelo as datetime));
     -- Insert statements for procedure here
-	select Via_Fecha_Salida, Via_Fecha_Llegada_Estimada,
-	       Aer_Matricula,Aer_KG_Disponibles, Rut_Cia_ID_Origen,Rut_Cia_ID_Destino, Cia_Descripcion
-                                                       from SFX.t_viajes,SfX.t_rutas,SFX.t_aeronaves, SFX.t_ciudades_aeropuertos
-                                                      where Via_Rut_ID=Rut_ID
-                                                      and Via_Aer_ID=Aer_ID 
-													  and Rut_Cia_ID_Origen=Cia_ID
-                                                      and Via_Fecha_Salida > CONVERT(datetime,@varfecha,121)  
-                                                     and Rut_Cia_ID_Origen = @CiudadOrigId
-                                                     and Rut_Cia_ID_Destino =@CiudadDestId;
+	select Via_Fecha_Salida as FechaSalida, Via_Fecha_Llegada_Estimada as FechaEstimada,
+	       Aer_Matricula as Aeronave,
+		   (select SFX.KgDisponibles(Via_ID)) as CantButacas, 
+		   --Aer_KG_Disponibles as KG_Disponibles, 
+		   orig.Cia_Descripcion as Ciudad_Origen, dest.Cia_Descripcion as Ciudad_Destino
+    from SFX.t_viajes,SfX.t_rutas,SFX.t_aeronaves, 
+		SFX.t_ciudades_aeropuertos orig, SFX.t_ciudades_aeropuertos dest
+    where Via_Rut_ID=Rut_ID
+			and Via_Aer_ID=Aer_ID 
+			and Rut_Cia_ID_Origen=orig.Cia_ID
+			and Rut_Cia_ID_Destino=dest.Cia_ID
+            and CONVERT(date,Via_Fecha_Salida,121) = CONVERT(date,@varfecha,121) 
+            and Rut_Cia_ID_Origen = @CiudadOrigId
+            and Rut_Cia_ID_Destino =@CiudadDestId;
+
 END;
 
 GO

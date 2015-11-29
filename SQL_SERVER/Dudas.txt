@@ -1,0 +1,2 @@
+como se modela la baja del paquete.?
+Y qué está modelando la fecha de compra?
