@@ -40,5 +40,50 @@ namespace AerolineaFrba.Abm_Aeronave
 
             cnn.Cerrar();
         }
+
+        private void cmdGuardar_Click(object sender, EventArgs e)
+        {
+           
+            
+            try
+            {
+                Conexion cnn = new Conexion();
+
+                cnn.ArmarProcedimiento("SFX.InsertarAeronave");
+
+                cnn.AgregarParametro("@matricula", txtMatricula.Text);
+                cnn.AgregarParametro("@mod_id",  cmbBoxModelo.SelectedValue);
+                cnn.AgregarParametro("@kg_disponibles", txtKg.Text);
+                cnn.AgregarParametro("@cantPasillo", txtPasillo.Text);
+                cnn.AgregarParametro("@cantVentanilla", txtVentanilla.Text);
+                cnn.AgregarParametro("@ser_id", cmbBoxTipoServ.SelectedValue);
+
+                cnn.Abrir();
+                
+                cnn.EjecutarProcedimiento();
+
+                cnn.Cerrar();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void cmdLimpiar_Click(object sender, EventArgs e)
+        {
+            
+            InitializeComboBox();
+
+            foreach (Control control in this.grdCampos.Controls)
+            {
+                if (control is TextBox)
+                {
+                    control.Text = "";
+                }
+            }
+            this.txtMatricula.Focus();
+        }
     }
 }

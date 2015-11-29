@@ -28,56 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.txtPasillo = new System.Windows.Forms.TextBox();
+            this.txtKg = new System.Windows.Forms.TextBox();
+            this.txtMatricula = new System.Windows.Forms.TextBox();
             this.lblMatricula = new System.Windows.Forms.Label();
             this.lblModelo = new System.Windows.Forms.Label();
             this.lblkgDisponible = new System.Windows.Forms.Label();
             this.lblTipoServiciol = new System.Windows.Forms.Label();
             this.CantButPasillo = new System.Windows.Forms.Label();
             this.CantButVentanilla = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.txtVentanilla = new System.Windows.Forms.TextBox();
             this.cmbBoxTipoServ = new System.Windows.Forms.ComboBox();
             this.cmbBoxModelo = new System.Windows.Forms.ComboBox();
             this.grdCampos.SuspendLayout();
             this.SuspendLayout();
             // 
+            // cmdLimpiar
+            // 
+            this.cmdLimpiar.Click += new System.EventHandler(this.cmdLimpiar_Click);
+            // 
+            // cmdGuardar
+            // 
+            this.cmdGuardar.Click += new System.EventHandler(this.cmdGuardar_Click);
+            // 
             // grdCampos
             // 
             this.grdCampos.Controls.Add(this.cmbBoxModelo);
             this.grdCampos.Controls.Add(this.cmbBoxTipoServ);
-            this.grdCampos.Controls.Add(this.textBox6);
+            this.grdCampos.Controls.Add(this.txtVentanilla);
             this.grdCampos.Controls.Add(this.CantButVentanilla);
             this.grdCampos.Controls.Add(this.CantButPasillo);
             this.grdCampos.Controls.Add(this.lblTipoServiciol);
             this.grdCampos.Controls.Add(this.lblkgDisponible);
             this.grdCampos.Controls.Add(this.lblModelo);
             this.grdCampos.Controls.Add(this.lblMatricula);
-            this.grdCampos.Controls.Add(this.textBox5);
-            this.grdCampos.Controls.Add(this.textBox3);
-            this.grdCampos.Controls.Add(this.textBox1);
+            this.grdCampos.Controls.Add(this.txtMatricula);
+            this.grdCampos.Controls.Add(this.txtKg);
+            this.grdCampos.Controls.Add(this.txtPasillo);
             // 
-            // textBox1
+            // txtPasillo
             // 
-            this.textBox1.Location = new System.Drawing.Point(147, 166);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
+            this.txtPasillo.Location = new System.Drawing.Point(147, 166);
+            this.txtPasillo.Name = "txtPasillo";
+            this.txtPasillo.Size = new System.Drawing.Size(100, 20);
+            this.txtPasillo.TabIndex = 0;
             // 
-            // textBox3
+            // txtKg
             // 
-            this.textBox3.Location = new System.Drawing.Point(147, 94);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 2;
+            this.txtKg.Location = new System.Drawing.Point(147, 94);
+            this.txtKg.Name = "txtKg";
+            this.txtKg.Size = new System.Drawing.Size(100, 20);
+            this.txtKg.TabIndex = 2;
             // 
-            // textBox5
+            // txtMatricula
             // 
-            this.textBox5.Location = new System.Drawing.Point(147, 19);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 4;
+            this.txtMatricula.Location = new System.Drawing.Point(147, 19);
+            this.txtMatricula.Name = "txtMatricula";
+            this.txtMatricula.Size = new System.Drawing.Size(100, 20);
+            this.txtMatricula.TabIndex = 4;
             // 
             // lblMatricula
             // 
@@ -133,12 +141,12 @@
             this.CantButVentanilla.TabIndex = 10;
             this.CantButVentanilla.Text = "Cant Butacas Ventanilla";
             // 
-            // textBox6
+            // txtVentanilla
             // 
-            this.textBox6.Location = new System.Drawing.Point(147, 204);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 11;
+            this.txtVentanilla.Location = new System.Drawing.Point(147, 204);
+            this.txtVentanilla.Name = "txtVentanilla";
+            this.txtVentanilla.Size = new System.Drawing.Size(100, 20);
+            this.txtVentanilla.TabIndex = 11;
             // 
             // cmbBoxTipoServ
             // 
@@ -174,15 +182,15 @@
 
         private System.Windows.Forms.ComboBox cmbBoxModelo;
         private System.Windows.Forms.ComboBox cmbBoxTipoServ;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox txtVentanilla;
         private System.Windows.Forms.Label CantButVentanilla;
         private System.Windows.Forms.Label CantButPasillo;
         private System.Windows.Forms.Label lblTipoServiciol;
         private System.Windows.Forms.Label lblkgDisponible;
         private System.Windows.Forms.Label lblModelo;
         private System.Windows.Forms.Label lblMatricula;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtMatricula;
+        private System.Windows.Forms.TextBox txtKg;
+        private System.Windows.Forms.TextBox txtPasillo;
     }
 }
