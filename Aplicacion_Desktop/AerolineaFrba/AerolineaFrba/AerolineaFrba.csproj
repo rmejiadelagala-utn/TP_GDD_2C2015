@@ -66,6 +66,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Aeronave\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Aeronave\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Aeronave\FrmAltaAeronave.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,11 +84,11 @@
     <Compile Include="Abm Aeronave\FrmListadoAeronave.Designer.cs">
       <DependentUpon>FrmListadoAeronave.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Ciudad\FrmBaja.cs">
+    <Compile Include="Abm Ciudad\FrmBajaCiudad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Ciudad\FrmBaja.Designer.cs">
-      <DependentUpon>FrmBaja.cs</DependentUpon>
+    <Compile Include="Abm Ciudad\FrmBajaCiudad.Designer.cs">
+      <DependentUpon>FrmBajaCiudad.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Ciudad\FrmAltaCiudad.cs">
       <SubType>Form</SubType>
@@ -201,6 +207,9 @@
     <Compile Include="Template\FrmListadoTemplate.Designer.cs">
       <DependentUpon>FrmListadoTemplate.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Abm Aeronave\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Aeronave\FrmAltaAeronave.resx">
       <DependentUpon>FrmAltaAeronave.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,8 +219,8 @@
     <EmbeddedResource Include="Abm Ciudad\FrmAltaCiudad.resx">
       <DependentUpon>FrmAltaCiudad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Ciudad\FrmBaja.resx">
-      <DependentUpon>FrmBaja.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Ciudad\FrmBajaCiudad.resx">
+      <DependentUpon>FrmBajaCiudad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ciudad\FrmListadoCiudad.resx">
       <DependentUpon>FrmListadoCiudad.cs</DependentUpon>

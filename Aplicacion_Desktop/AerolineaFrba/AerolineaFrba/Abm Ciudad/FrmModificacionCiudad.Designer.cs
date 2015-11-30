@@ -65,7 +65,7 @@
             this.Controls.Add(this.txtCiudad);
             this.Controls.Add(this.lblCiudad);
             this.Name = "FrmModificacionCiudad";
-            this.Text = "FrmModificacionCiudad";
+            this.Text = "Modificacion Ciudad";
             this.Load += new System.EventHandler(this.FrmModificacionCiudad_Load);
             this.Controls.SetChildIndex(this.cmdLimpiar, 0);
             this.Controls.SetChildIndex(this.cmdGuardar, 0);

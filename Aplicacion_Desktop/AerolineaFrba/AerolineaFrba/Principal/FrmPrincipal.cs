@@ -52,29 +52,28 @@ namespace AerolineaFrba.Principal
 
         private void ciudadesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmAltaCiudad c = new FrmAltaCiudad();
-            c.Show();
+
         }
 
-        private void modificacionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void modificacionCiudadMenuItem_Click(object sender, EventArgs e)
         {
             FrmListadoCiudad c = new FrmListadoCiudad();
             c.Show();
         }
 
-        private void altaModificaciónToolStripMenuItem_Click(object sender, EventArgs e)
+        private void altaModificaciónCiudadMenuItem_Click(object sender, EventArgs e)
         {
             FrmAltaCiudad c = new FrmAltaCiudad();
             c.Show();
         }
 
-        private void bajaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void bajaCiudadMenuItem_Click(object sender, EventArgs e)
         {
-            FrmBaja c = new FrmBaja();
+            FrmBajaCiudad c = new FrmBajaCiudad();
             c.Show();
         }
 
-        private void listadoToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void listadoCiudadMenuItem1_Click(object sender, EventArgs e)
         {
             FrmListadoCiudad c = new FrmListadoCiudad();
             c.Show();
@@ -96,6 +95,21 @@ namespace AerolineaFrba.Principal
         {
             FrmAltaAeronave avion = new FrmAltaAeronave();
             avion.Show();
+        }
+
+        private void bajaAeronaveMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void modificacionAeronaveMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listadoAeronaveMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

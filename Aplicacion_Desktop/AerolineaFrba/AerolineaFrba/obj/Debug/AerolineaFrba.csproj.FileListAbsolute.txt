@@ -45,7 +45,6 @@ C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\bin\Debug\AerolineaFrba.pdb
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.csprojResolveAssemblyReference.cache
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmAltaCiudad.resources
-C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmBaja.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmListadoCiudad.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmModificacionCiudad.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Rol.FrmListadoRol.resources
@@ -66,3 +65,5 @@ C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Compra.FrmPasaje.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmAltaAeronave.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmListadoAeronave.resources
+C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmBaja.resources
+C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmBajaCiudad.resources
