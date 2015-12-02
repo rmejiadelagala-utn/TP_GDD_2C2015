@@ -28,58 +28,77 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtCiudad = new System.Windows.Forms.TextBox();
-            this.lblCiudad = new System.Windows.Forms.Label();
+            this.txtBoxCiudadModif = new System.Windows.Forms.TextBox();
+            this.lblCiudadModif = new System.Windows.Forms.Label();
+            this.dataGridViewCiudadModif = new System.Windows.Forms.DataGridView();
+            this.grdFiltros.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCiudadModif)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdLimpiar
             // 
             this.cmdLimpiar.Click += new System.EventHandler(this.cmdLimpiar_Click);
             // 
-            // cmdGuardar
+            // cmdBuscar
             // 
-            this.cmdGuardar.Click += new System.EventHandler(this.cmdGuardar_Click);
+            this.cmdBuscar.Location = new System.Drawing.Point(365, 137);
+            this.cmdBuscar.Click += new System.EventHandler(this.cmdBuscar_Click);
             // 
-            // txtCiudad
+            // grdFiltros
             // 
-            this.txtCiudad.Location = new System.Drawing.Point(104, 65);
-            this.txtCiudad.Name = "txtCiudad";
-            this.txtCiudad.Size = new System.Drawing.Size(138, 20);
-            this.txtCiudad.TabIndex = 6;
-            this.txtCiudad.TextChanged += new System.EventHandler(this.txtCiudad_TextChanged);
+            this.grdFiltros.Controls.Add(this.lblCiudadModif);
+            this.grdFiltros.Controls.Add(this.txtBoxCiudadModif);
+            this.grdFiltros.Size = new System.Drawing.Size(429, 96);
             // 
-            // lblCiudad
+            // txtBoxCiudadModif
             // 
-            this.lblCiudad.AutoSize = true;
-            this.lblCiudad.Location = new System.Drawing.Point(42, 65);
-            this.lblCiudad.Name = "lblCiudad";
-            this.lblCiudad.Size = new System.Drawing.Size(43, 13);
-            this.lblCiudad.TabIndex = 5;
-            this.lblCiudad.Text = "Ciudad:";
+            this.txtBoxCiudadModif.Location = new System.Drawing.Point(141, 29);
+            this.txtBoxCiudadModif.Name = "txtBoxCiudadModif";
+            this.txtBoxCiudadModif.Size = new System.Drawing.Size(166, 20);
+            this.txtBoxCiudadModif.TabIndex = 0;
+            // 
+            // lblCiudadModif
+            // 
+            this.lblCiudadModif.AutoSize = true;
+            this.lblCiudadModif.Location = new System.Drawing.Point(31, 36);
+            this.lblCiudadModif.Name = "lblCiudadModif";
+            this.lblCiudadModif.Size = new System.Drawing.Size(95, 13);
+            this.lblCiudadModif.TabIndex = 1;
+            this.lblCiudadModif.Text = "Ciudad a Modificar";
+            // 
+            // dataGridViewCiudadModif
+            // 
+            this.dataGridViewCiudadModif.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCiudadModif.Location = new System.Drawing.Point(10, 184);
+            this.dataGridViewCiudadModif.Name = "dataGridViewCiudadModif";
+            this.dataGridViewCiudadModif.Size = new System.Drawing.Size(429, 153);
+            this.dataGridViewCiudadModif.TabIndex = 4;
+            this.dataGridViewCiudadModif.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCiudadModif_CellContentClick_1);
             // 
             // FrmModificacionCiudad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 334);
-            this.Controls.Add(this.txtCiudad);
-            this.Controls.Add(this.lblCiudad);
+            this.ClientSize = new System.Drawing.Size(470, 349);
+            this.Controls.Add(this.dataGridViewCiudadModif);
             this.Name = "FrmModificacionCiudad";
-            this.Text = "Modificacion Ciudad";
-            this.Load += new System.EventHandler(this.FrmModificacionCiudad_Load);
+            this.Text = "Modificación de Ciudad";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Controls.SetChildIndex(this.cmdLimpiar, 0);
-            this.Controls.SetChildIndex(this.cmdGuardar, 0);
-            this.Controls.SetChildIndex(this.grdCampos, 0);
-            this.Controls.SetChildIndex(this.lblCiudad, 0);
-            this.Controls.SetChildIndex(this.txtCiudad, 0);
+            this.Controls.SetChildIndex(this.cmdBuscar, 0);
+            this.Controls.SetChildIndex(this.grdFiltros, 0);
+            this.Controls.SetChildIndex(this.dataGridViewCiudadModif, 0);
+            this.grdFiltros.ResumeLayout(false);
+            this.grdFiltros.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCiudadModif)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtCiudad;
-        private System.Windows.Forms.Label lblCiudad;
+        private System.Windows.Forms.Label lblCiudadModif;
+        private System.Windows.Forms.TextBox txtBoxCiudadModif;
+        private System.Windows.Forms.DataGridView dataGridViewCiudadModif;
     }
 }

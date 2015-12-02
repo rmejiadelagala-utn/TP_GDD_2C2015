@@ -57,7 +57,7 @@ namespace AerolineaFrba.Principal
 
         private void modificacionCiudadMenuItem_Click(object sender, EventArgs e)
         {
-            FrmListadoCiudad c = new FrmListadoCiudad();
+            FrmModificacionCiudad c = new FrmModificacionCiudad();
             c.Show();
         }
 

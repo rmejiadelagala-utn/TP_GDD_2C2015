@@ -84,6 +84,18 @@
     <Compile Include="Abm Aeronave\FrmListadoAeronave.Designer.cs">
       <DependentUpon>FrmListadoAeronave.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Ciudad\FrmAltaModifCiudad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmAltaModifCiudad.Designer.cs">
+      <DependentUpon>FrmAltaModifCiudad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmModificacionCiudad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Ciudad\FrmModificacionCiudad.Designer.cs">
+      <DependentUpon>FrmModificacionCiudad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Ciudad\FrmBajaCiudad.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,12 +113,6 @@
     </Compile>
     <Compile Include="Abm Ciudad\FrmListadoCiudad.Designer.cs">
       <DependentUpon>FrmListadoCiudad.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Ciudad\FrmModificacionCiudad.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Ciudad\FrmModificacionCiudad.Designer.cs">
-      <DependentUpon>FrmModificacionCiudad.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Rol\FrmListadoRol.cs">
       <SubType>Form</SubType>
@@ -216,6 +222,12 @@
     <EmbeddedResource Include="Abm Aeronave\FrmListadoAeronave.resx">
       <DependentUpon>FrmListadoAeronave.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ciudad\FrmAltaModifCiudad.resx">
+      <DependentUpon>FrmAltaModifCiudad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Ciudad\FrmModificacionCiudad.resx">
+      <DependentUpon>FrmModificacionCiudad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Ciudad\FrmAltaCiudad.resx">
       <DependentUpon>FrmAltaCiudad.cs</DependentUpon>
     </EmbeddedResource>
@@ -224,9 +236,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Ciudad\FrmListadoCiudad.resx">
       <DependentUpon>FrmListadoCiudad.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Ciudad\FrmModificacionCiudad.resx">
-      <DependentUpon>FrmModificacionCiudad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\FrmListadoRol.resx">
       <DependentUpon>FrmListadoRol.cs</DependentUpon>

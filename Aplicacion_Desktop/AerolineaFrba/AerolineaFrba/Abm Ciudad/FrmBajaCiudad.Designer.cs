@@ -53,7 +53,7 @@
             // 
             // txtCiudadEliminar
             // 
-            this.txtCiudadEliminar.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.txtCiudadEliminar.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txtCiudadEliminar.Location = new System.Drawing.Point(171, 33);
             this.txtCiudadEliminar.Name = "txtCiudadEliminar";
             this.txtCiudadEliminar.Size = new System.Drawing.Size(131, 20);

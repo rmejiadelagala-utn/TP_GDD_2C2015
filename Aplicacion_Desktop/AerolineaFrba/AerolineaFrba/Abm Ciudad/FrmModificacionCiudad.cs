@@ -1,7 +1,9 @@
-﻿using System;
+﻿using AerolineaFrba.Template;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,31 +12,78 @@ using System.Windows.Forms;
 
 namespace AerolineaFrba.Abm_Ciudad
 {
-    public partial class FrmModificacionCiudad : Template.FrmAltaModificacion
+    public partial class FrmModificacionCiudad : Template.FrmListadoTemplate
     {
+
+        DataGridViewButtonColumn Boton = new DataGridViewButtonColumn();
+
         public FrmModificacionCiudad()
         {
             InitializeComponent();
+            this.txtBoxCiudadModif.Focus();
+            InicializarFiltrosBusqueda();
         }
 
-        private void FrmModificacionCiudad_Load(object sender, EventArgs e)
+        private void InicializarFiltrosBusqueda()
+        {
+            foreach (Control control in this.grdFiltros.Controls)
+            {
+                if (control is TextBox)
+                {
+                    control.Text = "";
+                }
+            }
+            this.txtBoxCiudadModif.Focus();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void txtCiudad_TextChanged(object sender, EventArgs e)
+        private void cmdBuscar_Click(object sender, EventArgs e)
         {
-
+            CargarDataGrid();
         }
 
-        private void cmdLimpiar_Click(object sender, EventArgs e)
+       private void CargarDataGrid()
         {
+            Conexion cnn = new Conexion();
+            cnn.Abrir();
+            cnn.ArmarProcedimiento("SFX.BuscarCiudad");
+            cnn.AgregarParametro("CiudadNombre", txtBoxCiudadModif.Text);
+            try
+            {
+                cnn.LoadDataGridView(dataGridViewCiudadModif);
+                cnn.Cerrar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo hacer la consulta a la base de datos" + ex.ToString());
+            }
 
-        }
+            Boton.Name = "Modificar";
+            this.dataGridViewCiudadModif.Columns.Add(Boton);
 
-        private void cmdGuardar_Click(object sender, EventArgs e)
-        {
+         }
 
+       private void cmdLimpiar_Click(object sender, EventArgs e)
+       {
+           InicializarFiltrosBusqueda();
+       }
+
+
+       private void dataGridViewCiudadModif_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+       {
+        if (this.dataGridViewCiudadModif.Columns[e.ColumnIndex].Name == "Modificar")
+           {
+             //  string id_ciudad = dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_ID"].Value;
+             //  string ciu_descripcion = dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_Descripcion"].Value; 
+               FrmAltaModifCiudad altamodif = new FrmAltaModifCiudad();
+               altamodif.cargarTextBoxCiudad(dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_ID"].Value.ToString(), 
+                   dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_Descripcion"].Value.ToString() ); 
+                altamodif.Show();
+            }
         }
     }
 }
