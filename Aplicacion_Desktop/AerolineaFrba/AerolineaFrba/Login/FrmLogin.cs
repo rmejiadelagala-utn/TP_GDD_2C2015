@@ -75,7 +75,7 @@ namespace AerolineaFrba.Login
 
         private void FrmLogin_Load(object sender, EventArgs e)
         {
-            this.txtUsuario.Focus();
+            txtUsuario.Select(0,0);
         }
 
         private void txtUsuario_TextChanged(object sender, EventArgs e)

@@ -38,6 +38,10 @@ namespace AerolineaFrba.Abm_Ciudad
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            CargarDataGrid();
+            Boton.Name = "Modificar";
+            this.dataGridViewCiudadModif.Columns.Add(Boton);
+            this.txtBoxCiudadModif.Focus();
 
         }
 
@@ -62,14 +66,11 @@ namespace AerolineaFrba.Abm_Ciudad
                 MessageBox.Show("No se pudo hacer la consulta a la base de datos" + ex.ToString());
             }
 
-            Boton.Name = "Modificar";
-            this.dataGridViewCiudadModif.Columns.Add(Boton);
-
          }
 
        private void cmdLimpiar_Click(object sender, EventArgs e)
        {
-           InicializarFiltrosBusqueda();
+           this.InicializarFiltrosBusqueda();
        }
 
 
@@ -77,12 +78,11 @@ namespace AerolineaFrba.Abm_Ciudad
        {
         if (this.dataGridViewCiudadModif.Columns[e.ColumnIndex].Name == "Modificar")
            {
-             //  string id_ciudad = dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_ID"].Value;
-             //  string ciu_descripcion = dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_Descripcion"].Value; 
                FrmAltaModifCiudad altamodif = new FrmAltaModifCiudad();
                altamodif.cargarTextBoxCiudad(dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_ID"].Value.ToString(), 
                    dataGridViewCiudadModif.Rows[e.RowIndex].Cells["Cia_Descripcion"].Value.ToString() ); 
-                altamodif.Show();
+               altamodif.Show();
+               this.InicializarFiltrosBusqueda(); 
             }
         }
     }

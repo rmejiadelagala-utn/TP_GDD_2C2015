@@ -34,7 +34,7 @@ namespace AerolineaFrba.Abm_Ciudad
             {
                 MessageBox.Show("No se pudo actualizar la base de datos" + ex.ToString());
             }
-
+            Close();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -46,6 +46,7 @@ namespace AerolineaFrba.Abm_Ciudad
         {
             this.txtBoxIDCiudad.Text = id;
             this.txtBoxNombreCiudad.Text = nombreCiudad;
+            
         }
 
     }

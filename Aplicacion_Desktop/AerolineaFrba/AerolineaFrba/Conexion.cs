@@ -52,7 +52,7 @@ namespace AerolineaFrba
         public void EjecutarProcedimiento()
         {
             int resultado = cmd.ExecuteNonQuery();
-            MessageBox.Show("Datos insertados: " + resultado.ToString());
+            MessageBox.Show("Operacion realizada: " + resultado.ToString());
         }
 
         public int EjecutarFuncion()
