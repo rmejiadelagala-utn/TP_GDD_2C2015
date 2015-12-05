@@ -71,7 +71,24 @@ IF OBJECT_ID('SFX.t_funcionalidades') IS NOT NULL
 DROP TABLE SFX.t_funcionalidades
 IF OBJECT_ID('SFX.t_milla_detalle') IS NOT NULL
 DROP TABLE SFX.t_milla_detalle
+IF OBJECT_ID('SFX.ExisteUsuario') IS NOT NULL
+DROP FUNCTION SFX.ExisteUsuario
+IF OBJECT_ID('SFX.GetCiudades') IS NOT NULL
+DROP PROCEDURE SFX.GetCiudades
+IF OBJECT_ID('SFX.InsertarCiudad') IS NOT NULL
+DROP PROCEDURE SFX.InsertarCiudad
+IF OBJECT_ID('SFX.ModificarCiudad') IS NOT NULL
+DROP PROCEDURE SFX.ModificarCiudad
+IF OBJECT_ID('SFX.BajaCiudad') IS NOT NULL
+DROP PROCEDURE SFX.BajaCiudad
 
+--Tablas temporales
+IF OBJECT_ID('tempdb..#tpm_repeticiones') IS NOT NULL
+DROP TABLE SFX.#tpm_repeticiones
+IF OBJECT_ID('tempdb..#tpm_aeronaves') IS NOT NULL
+DROP TABLE SFX.#tpm_aeronaves
+IF OBJECT_ID('tempdb..#tmp_maestra') IS NOT NULL
+DROP TABLE SFX.#tmp_maestra
 
 /*---------------------ELIMINACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
 
@@ -89,6 +106,8 @@ CREATE TABLE SFX.t_clientes (
 	Cli_Fecha_Baja		datetime
 	
 )
+
+
 --Creación tabla "Pasajes"
 CREATE TABLE SFX.t_pasajes (
 	Pas_Codigo			numeric(18,0) NOT NULL,
@@ -152,7 +171,7 @@ CREATE TABLE SFX.t_viajes (
 	Via_Fecha_Salida			datetime,
 	Via_Fecha_Llegada			datetime,
 	Via_Fecha_Llegada_Estimada	datetime,
-	Via_Invalido				bit			-- 1=Invalido, 0=valido
+	Via_Invalido				bit		-- 1=Invalido, 0=valido
 )
 --Creación tabla "Tipo Butacas"
 CREATE TABLE SFX.t_tipo_butacas (
@@ -172,7 +191,6 @@ CREATE TABLE SFX.t_butacas_viaje (
 	Buv_ID						int identity,
 	Buv_Via_ID					int,
 	Buv_But_ID					int,
-	--Buv_Cli_ID					int,
 	Buv_Fecha_Baja				datetime
 )
 --Creación tabla "Fabricantes"
@@ -301,7 +319,7 @@ CREATE TABLE SFX.t_premio_canje(
 	pca_Id				int identity,
 	pca_pre_id			int,
 	pca_cli_id			int,
-	pca_puntos			int,	--Porque el Valor punto de un premio puede cambiar en t_premio
+	pca_puntos			int,	
 	pca_cantidad		int,
 	pca_fecha			date
 )
@@ -542,6 +560,10 @@ ALTER TABLE SFX.t_premio_canje
 ADD CONSTRAINT FK_t_premio_canje_02 FOREIGN KEY (pca_cli_id) 
     REFERENCES SFX.t_clientes (Cli_Id)
 
+--INDICES
+
+CREATE NONCLUSTERED INDEX IDXCLIENTE_DNI ON SFX.t_clientes(cli_dni)
+
 
 /*---------------------MIGRAMOS TABLA gd_Esquema.Maestra A LAS NUEVAS TABLAS---------------------*/
 
@@ -635,17 +657,12 @@ WHERE a.Aeronave_Fabricante =  b.Fab_Nombre
 INSERT INTO [SFX].[t_formas_pago] VALUES ('contado')
 INSERT INTO [SFX].[t_formas_pago] VALUES ('tarjeta_credito')
 
---Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------
---Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------
---Migramos datos de la tabla maestra a tabla ""-----------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --Migramos datos de la tabla maestra a tabla "Clientes"---------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 SELECT Cli_Dni, COUNT(*) repeticiones
-INTO SFX.#tpm_pereticiones
+INTO SFX.#tpm_repeticiones
 FROM	(SELECT Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
 		   FROM gd_esquema.Maestra
 GROUP BY Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac) m
@@ -667,10 +684,10 @@ SELECT DISTINCT m1.Cli_Nombre,
 						null
 				END baja
 FROM gd_esquema.Maestra m1,
-     SFX.#tpm_pereticiones r
+     SFX.#tpm_repeticiones r
 WHERE m1.Cli_Dni = r.Cli_Dni
 
-DROP TABLE SFX.#tpm_pereticiones
+
 
 --Migramos datos de la tabla maestra a tabla "t_tipo_butacas"---------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -693,11 +710,10 @@ FROM (SELECT DISTINCT a.Ruta_Codigo,
 					  a.Ruta_Ciudad_Destino
 	   FROM [gd_esquema].Maestra a) b
 GROUP BY b.Ruta_Codigo
---ORDER BY b.Ruta_Codigo;
 
+BEGIN TRANSACTION
 
 OPEN rutas_cursor
-
 FETCH NEXT FROM rutas_cursor 
 INTO @ruta_codigo, @cantidad
 
@@ -730,7 +746,8 @@ BEGIN
 					m.Ruta_Ciudad_Origen,
 					m.Ruta_Ciudad_Destino,
 					s.Ser_ID
-	FROM [gd_esquema].Maestra m , SFX.t_servicios s
+	FROM [gd_esquema].Maestra m, 
+		 SFX.t_servicios s
 	WHERE	m.Ruta_Codigo = @ruta_codigo
 	AND		s.Ser_Descripcion = m.Tipo_Servicio) tbl
   
@@ -741,38 +758,25 @@ END
 CLOSE rutas_cursor;
 DEALLOCATE rutas_cursor
 
+COMMIT TRANSACTION
+
 
 --Migramos datos de la tabla maestra a tabla "t_aeronaves"------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-DECLARE 
-@aer_matricula nvarchar(255), @modelo nvarchar(255), @fabricante nvarchar(255), @aer_kg numeric(18,0), @servicio  nvarchar(255),
-@modelo_id int, @serv_id int ; 
+SELECT DISTINCT Aeronave_Matricula, Aeronave_Modelo,Aeronave_Fabricante,Aeronave_KG_Disponibles, Tipo_Servicio
+INTO SFX.#tpm_aeronaves
+FROM gd_esquema.Maestra
 
---- Cursor principal 
-DECLARE aeronave_cursor CURSOR FOR 
-	select distinct Aeronave_Matricula, Aeronave_Modelo,Aeronave_Fabricante,Aeronave_KG_Disponibles, Tipo_Servicio 
-	from gd_esquema.Maestra;
-
-OPEN aeronave_cursor
-
-FETCH NEXT FROM aeronave_cursor INTO @aer_matricula, @modelo, @fabricante, @aer_kg, @servicio
-
-WHILE @@FETCH_STATUS = 0
-BEGIN
-  
-	SET @modelo_id = (select Mod_ID from SFX.t_modelos 
-						where Mod_Nombre=@modelo 
-						and Mod_Fab_ID = (select Fab_ID from SFX.t_fabricantes where Fab_Nombre=@fabricante)
-					 )
-	SET @serv_id   = (select Ser_ID from SFX.t_servicios where Ser_Descripcion=@servicio)
-
-	INSERT INTO SFX.t_aeronaves 
-			   values ( @aer_matricula, @modelo_id, @aer_kg, CONVERT(datetime,'01-01-2000',121),NULL,NULL,NULL,@serv_id) 
-
-	FETCH NEXT FROM aeronave_cursor INTO @aer_matricula, @modelo, @fabricante, @aer_kg, @servicio
-END 
-CLOSE aeronave_cursor
-DEALLOCATE aeronave_cursor
+INSERT INTO SFX.t_aeronaves 
+SELECT a.Aeronave_Matricula, c.Mod_ID, a.Aeronave_KG_Disponibles, CONVERT(datetime,'01-01-2000',121), NULL, NULL, NULL, d.Ser_ID 
+FROM SFX.#tpm_aeronaves a,
+	 SFX.t_fabricantes b,
+	 SFX.t_modelos  c,
+	 SFX.t_servicios d
+WHERE a.Aeronave_Fabricante = b.Fab_Nombre
+and   b.Fab_ID = c.Mod_Fab_ID
+AND   A.Aeronave_Modelo = c.Mod_Nombre
+AND   A.Tipo_Servicio = d.Ser_Descripcion
 
 
 --Migramos datos de la tabla maestra a tabla "t_butacas"--------------------------------------------------------------------------------------------------
@@ -786,8 +790,8 @@ DECLARE
 DECLARE butaca_cursor CURSOR FOR 
 	select distinct Aeronave_Matricula, Butaca_Nro, Butaca_Piso, Butaca_Tipo
 	from gd_esquema.Maestra
-	where Butaca_Tipo <> '0' -- si butaca_tipo es distinto a cero entonces es pasaje y no encomienda
-	--order by Aeronave_Matricula, Butaca_Nro
+	where Butaca_Tipo <> '0' 
+
 
 OPEN butaca_cursor
 
@@ -820,29 +824,41 @@ DECLARE
 @duplic int, 
 @ID_tipoServAeronave int, 
 @ID_tipoServRuta int, 
-@Id_aeronave int, @Id_ruta int
+@Id_aeronave int, @Id_ruta int,
+@Ruta_Ciudad_Origen nvarchar(255),
+@Ruta_Ciudad_Destino nvarchar(255)
+
 
 DECLARE cursor_viajes CURSOR FOR
-select distinct ruta_codigo,Aeronave_Matricula, Tipo_Servicio, FechaSalida, Fecha_LLegada_Estimada, FechaLLegada from gd_esquema.Maestra 
---order by ruta_codigo,Aeronave_Matricula, Tipo_Servicio;
+SELECT DISTINCT ruta_codigo,Aeronave_Matricula, Tipo_Servicio, FechaSalida, Fecha_LLegada_Estimada, FechaLLegada,
+				m.Ruta_Ciudad_Origen, m.Ruta_Ciudad_Destino
+FROM gd_esquema.Maestra m
+
+BEGIN TRANSACTION
 
 OPEN cursor_viajes
-
 FETCH NEXT FROM cursor_viajes 
-INTO @ruta_codigo, @aero_matricula, @tipoServicio, @fechSalida, @fechLlegadaEstimada, @fechLlegada 
+INTO @ruta_codigo, @aero_matricula, @tipoServicio, @fechSalida, @fechLlegadaEstimada, @fechLlegada,@Ruta_Ciudad_Origen,@Ruta_Ciudad_Destino
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
+
+
 	---- cargamos variables para realizar las validaciones en seccion CASE ----
 	SET @duplic=(select count(*) from SFX.t_rutas where Rut_Codigo=@ruta_codigo)
 	SET @Id_ruta = CASE WHEN @duplic>1 
-						THEN  (select TOP 1 Rut_ID from SFX.t_rutas where Rut_Codigo=@ruta_codigo) --si es ruta duplicadas tomamos la primera que levanta.
+						THEN  (select Rut_ID from SFX.t_rutas r where r.Rut_Codigo= @ruta_codigo
+							   AND r.Rut_Cia_ID_Origen = (select cia_id from sfx.t_ciudades_aeropuertos where Cia_Descripcion = @Ruta_Ciudad_Origen)
+							   and r.Rut_Cia_ID_Destino = (select cia_id from sfx.t_ciudades_aeropuertos where Cia_Descripcion =  @Ruta_Ciudad_Destino)
+							   and r.Rut_Ser_ID = (select ser_id from sfx.t_servicios where Ser_Descripcion =  @tipoServicio))
+							    --si es ruta duplicadas tomamos la primera que levanta.
 					    ELSE (select Rut_ID from SFX.t_rutas where Rut_Codigo=@ruta_codigo) -- si no es duplicada hago el select directo.
 					END
 	SET @ID_tipoServAeronave =(select Aer_Ser_ID from SFX.t_aeronaves where Aer_Matricula=@aero_matricula)
 	SET @ID_tipoServRuta     =(select Rut_Ser_ID from SFX.t_rutas where Rut_ID=@Id_ruta)
 	SET @Id_aeronave=(select Aer_ID from SFX.t_aeronaves where Aer_Matricula=@aero_matricula)
 
+	
 	--- Hacemos el insert ---
 	Insert into SFX.t_viajes values (
 	@Id_ruta,
@@ -850,51 +866,57 @@ BEGIN
 	@fechSalida,
 	@fechLlegada,
 	@fechLlegadaEstimada,
+	
 	----Seccion validaciones, sobre el viaje ---
 	CASE
-		WHEN @fechSalida < GETDATE() THEN 1  --validacion que fecha de salida sea mayor a la actual
-		WHEN @ID_tipoServAeronave<>@ID_tipoServRuta THEN 1 -- validacion de coincidencia de servicio ruta vs nave
-		WHEN @fechLlegadaEstimada > DATEADD(DAY,1,@fechSalida) THEN 1  -- la fecha estimada no puede ser de mas de 24 horas
+		WHEN @fechSalida < GETDATE() 
+			THEN 1  --validacion que fecha de salida sea mayor a la actual
+		WHEN @ID_tipoServAeronave<>@ID_tipoServRuta 
+			THEN 1 -- validacion de coincidencia de servicio ruta vs nave
+		WHEN @fechLlegadaEstimada > DATEADD(DAY,1,@fechSalida) 
+			THEN 1  -- la fecha estimada no puede ser de mas de 24 horas
 		WHEN EXISTS (select 1 from SFX.t_viajes 
-							  where Via_Aer_ID=@Id_aeronave and Via_Fecha_Salida=@fechSalida) THEN 1 --validamos si ya existe avion con la misma fecha de salida.
+					 where Via_Aer_ID=@Id_aeronave and Via_Fecha_Salida=@fechSalida) 
+			THEN 1 --validamos si ya existe avion con la misma fecha de salida.
 		ELSE
 			0  -- Si superó todas las validaciones, entonces el viaje es valido.
 	END
 	)
 
+
 FETCH NEXT FROM cursor_viajes 
-INTO @ruta_codigo, @aero_matricula, @tipoServicio, @fechSalida, @fechLlegadaEstimada, @fechLlegada 
+INTO @ruta_codigo, @aero_matricula, @tipoServicio, @fechSalida, @fechLlegadaEstimada, @fechLlegada ,@Ruta_Ciudad_Origen,@Ruta_Ciudad_Destino
 
 END
 
 CLOSE cursor_viajes
 DEALLOCATE cursor_viajes
 
---COMPRAR  !!!!REVISAR.....................
---
-/*
-DECLARE
+COMMIT TRANSACTION
+
+--Migramos datos de la tabla maestra a tabla "t_compras - t_pasajes - t_paquetes - t_butacas_viaje"--------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+DECLARE 
+
+@registro_num INT,           
+@Regs INT,
+@id int,
 @Cli_Dni numeric(18,0),
 @Cli_nombre nvarchar(255), 
 @Cli_apellido nvarchar(255), 
 @CodigoPasaje numeric(18,0), 
 @pasaje_fecha datetime, 
 @pasaje_precio  numeric(18,2), 
-@nroButaca  numeric(18,0), 
 @MatriculaAeronave nvarchar(255),
-@Id_aeronave int, 
 @id_butaca int, 
 @id_cliente int, 
 @fecha_baja datetime,
 @Ciudad_origen nvarchar(255),
 @Ciudad_Destino nvarchar(255),
 @tipo_servicio nvarchar(255),
-@ruta_codigo numeric(18,0),
-@id_ruta  int,
 @id_tipo_servicio int,
 @id_ciudad_origen int,
 @id_ciudad_destino int,
-@id_viaje	int,
 @fecha_salida datetime,
 @fecha_llegada datetime,
 @fecha_llegada_estimada datetime,
@@ -902,89 +924,254 @@ DECLARE
 @paquete_fecha datetime,
 @paquete_KG numeric(18,0),
 @paquete_precio numeric(18,0),
+@aer_id int,
+@rut_id int,
+@via_id int,
 @id_compra int
 
 
-DECLARE CURSOR_PASAJES CURSOR FAST_FORWARD FOR 
-	SELECT Cli_Dni, Cli_Nombre, Cli_apellido,Pasaje_Codigo, Pasaje_FechaCompra, Pasaje_Precio, Butaca_Nro, Aeronave_Matricula,
-	       Paquete_Codigo, Paquete_FechaCompra, Paquete_KG, Paquete_Precio,
-	       Ruta_Codigo, Ruta_Ciudad_Origen, Ruta_Ciudad_Destino, Tipo_Servicio , FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
-	FROM gd_esquema.Maestra;
-
-
-OPEN CURSOR_PASAJES
-
-FETCH NEXT FROM CURSOR_PASAJES
-INTO @Cli_Dni, @Cli_nombre, @Cli_apellido,@CodigoPasaje, @pasaje_fecha, @pasaje_precio, @nroButaca, @MatriculaAeronave,
-     @paquete_codigo, @paquete_fecha,@paquete_KG, @paquete_precio, 
-     @ruta_codigo,@Ciudad_origen,@Ciudad_Destino,@tipo_servicio,@fecha_salida,@fecha_llegada,@fecha_llegada_estimada
-
-
-WHILE @@FETCH_STATUS = 0
 BEGIN
-		--Obtenemos los valores necesarios para insertar en compra, pasaje y/o paquete.
 
-		SET @Id_aeronave= (select Aer_ID from SFX.t_aeronaves where Aer_Matricula = @MatriculaAeronave)
-		SET @id_butaca  = (select But_ID from SFX.t_butacas   where But_Aer_ID=@Id_aeronave and But_Numero = @nroButaca)
-		SET @id_ciudad_origen = (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = @Ciudad_origen)
-		SET @id_ciudad_destino = (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = @Ciudad_Destino)
-		SET @id_tipo_servicio  = (select Ser_ID from [SFX].[t_servicios] where Ser_Descripcion = @tipo_servicio)
-		SET @id_ruta = (select Rut_ID from [SFX].[t_rutas] where Rut_Codigo = @ruta_codigo
-		                AND Rut_Cia_ID_Destino = @id_ciudad_destino
-						AND Rut_Cia_ID_Origen =  @id_ciudad_origen
-						AND Rut_Ser_ID = @id_tipo_servicio)
-		SET @id_viaje = (select Via_ID from [SFX].[t_viajes] 
-		                 where Via_Aer_ID = @Id_aeronave
-						 and Via_Rut_ID = @id_ruta
-						 and Via_Fecha_Salida = @fecha_salida
-						 and Via_Fecha_Llegada = @fecha_llegada
-						 and Via_Fecha_Llegada_Estimada = @fecha_llegada_estimada)
+SELECT  IDENTITY(INT, 1, 1) as ID,
+	   m.Cli_Dni,
+	   m.Cli_Nombre,
+	   m.cli_apellido,
+	   m.Pasaje_Codigo, 
+	   m.Pasaje_FechaCompra, 
+	   m.Pasaje_Precio,
+	   (select But_ID from SFX.t_butacas 
+	    where But_Aer_ID= (select Aer_ID from SFX.t_aeronaves where Aer_Matricula = m.Aeronave_Matricula)
+	    and But_Numero =  m.Butaca_Nro) AS But_ID,
+	   m.Paquete_Codigo, 
+	   m.Paquete_FechaCompra, 
+	   m.Paquete_KG, 
+	   m.Paquete_Precio,
+	   (select Aer_ID from SFX.t_aeronaves where Aer_Matricula = m.Aeronave_Matricula) as aer_id,
+	   (select Rut_ID from [SFX].[t_rutas] 
+							where Rut_Codigo = m.Ruta_Codigo 
+							and Rut_Cia_ID_Destino = (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = m.Ruta_Ciudad_Destino)
+							and Rut_Cia_ID_Origen =  (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = m.Ruta_Ciudad_Origen)
+							and Rut_Ser_ID = (select Ser_ID from [SFX].[t_servicios] where Ser_Descripcion = m.Tipo_Servicio)) as  rut_id,
 
+	    (select Via_ID from [SFX].[t_viajes] 
+	     where Via_Aer_ID = (select Aer_ID from SFX.t_aeronaves where Aer_Matricula = m.Aeronave_Matricula)
+	     and Via_Rut_ID = (select Rut_ID from [SFX].[t_rutas] 
+							where Rut_Codigo = m.Ruta_Codigo 
+							and Rut_Cia_ID_Destino = (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = m.Ruta_Ciudad_Destino)
+							and Rut_Cia_ID_Origen =  (select Cia_ID from [SFX].[t_ciudades_aeropuertos] where Cia_Descripcion = m.Ruta_Ciudad_Origen)
+							and Rut_Ser_ID = (select Ser_ID from [SFX].[t_servicios] where Ser_Descripcion = m.Tipo_Servicio))
+		and Via_Fecha_Salida = m.FechaSalida
+		and Via_Fecha_Llegada = m.FechaLLegada
+		and Via_Fecha_Llegada_Estimada = m.Fecha_LLegada_Estimada) via_id
+	INTO #tmp_maestra
+	FROM gd_esquema.Maestra m;
 
-		SELECT TOP 1 @fecha_baja =  Cli_Fecha_Baja, @id_cliente = Cli_ID FROM SFX.t_clientes
-		
-		--Verificamos si el cliente es invalido(fecha de baja)
-		IF @fecha_baja IS NOT NULL
-			SET @id_cliente = (SELECT Cli_ID FROM SFX.t_clientes  
-								WHERE Cli_Dni = @Cli_Dni
-								AND Cli_Nombre = @Cli_nombre 
-								AND Cli_Apellido=@Cli_apellido
-								)
-			
-		
-		INSERT INTO [SFX].[t_compras] 
-		VALUES (@id_cliente, @id_viaje, 1, NULL)
+CREATE UNIQUE NONCLUSTERED INDEX Idx1 ON #tmp_maestra(id)
+
+SET @registro_num = 1   
+SET @Regs = (SELECT COUNT(*) FROM #tmp_maestra)
+Print @Regs
+
+BEGIN TRANSACTION
+
+-- Hacemos el Loop
+WHILE @registro_num <= @Regs
+BEGIN
+    
+	SELECT @id = t.id,
+			@Cli_Dni = t.Cli_Dni,
+			@Cli_nombre = t.Cli_Nombre,
+			@Cli_apellido = t.Cli_Apellido,
+			@CodigoPasaje = t.Pasaje_Codigo, 
+			@pasaje_fecha = t.pasaje_FechaCompra,
+			@pasaje_precio = t.pasaje_precio,
+			@id_butaca = t. but_id,
+			@paquete_codigo = t.paquete_codigo,
+			@paquete_fecha = t.paquete_FechaCompra,
+			@paquete_KG = t.paquete_kg,
+			@paquete_precio = t.paquete_precio,
+			@aer_id = t.aer_id,
+			@rut_id = t.rut_id,
+			@via_id = t.via_id
+	FROM #tmp_maestra t
+	WHERE t.id = @registro_num
+ 
+	--Obtengo el id_cliente
+	SELECT @id_cliente = Cli_ID FROM SFX.t_clientes
+	WHERE Cli_Dni = @Cli_Dni
+
+	--Queda null para el caso duplicado
+	IF @id_cliente IS NULL
+		SET @id_cliente = (SELECT Cli_ID FROM SFX.t_clientes  
+							WHERE Cli_Dni = @Cli_Dni
+							AND Cli_Nombre = @Cli_nombre 
+							AND Cli_Apellido=@Cli_apellido)
+	
+
+    INSERT INTO [SFX].[t_compras] 
+		VALUES (@id_cliente, @via_id, 1, NULL)
 
 		--Guardamos el id_compra generado
 		SET @id_compra = @@IDENTITY
 
 		--Si tiene precio de pasaje insert en t_pasaje
 		IF @pasaje_precio > 0 
-
+		BEGIN
 
 			INSERT INTO [SFX].[t_pasajes] 
 			VALUES (@CodigoPasaje,@pasaje_precio,@pasaje_fecha,NULL,@id_butaca,@id_cliente,@id_compra)
-			--ver si corresponde invalidar la compra completa
-			--en el paquete no tenemos un campo de estado o fecha de baja. VER
 
+
+			INSERT INTO SFX.t_butacas_viaje
+			VALUES (@via_id, @id_butaca, NULL)
+		END
 		--Tiene precio de paquete insert en t_paquete
 		ELSE
 
 			INSERT INTO [SFX].[t_paquetes]
 			VALUES (@paquete_codigo,@paquete_precio,@paquete_KG,@paquete_fecha,@id_cliente,@id_compra)
-     
-FETCH NEXT FROM CURSOR_PASAJES 
-INTO @Cli_Dni, @Cli_nombre, @Cli_apellido,@CodigoPasaje, @pasaje_fecha, @pasaje_precio, @nroButaca, @MatriculaAeronave,
-	 @paquete_codigo, @paquete_fecha,@paquete_KG, @paquete_precio,
-     @ruta_codigo,@Ciudad_origen,@Ciudad_Destino,@tipo_servicio,@fecha_salida,@fecha_llegada,@fecha_llegada_estimada
+
+
+    SET @registro_num = @registro_num + 1
 
 END
+COMMIT TRANSACTION
 
-CLOSE CURSOR_PASAJES
-DEALLOCATE CURSOR_PASAJES
-*/
-
+END
 
 
 /*---------------------CREACIÓN DE FUNCTIONS, PROCEDURES, TRIGGERS Y VIEWS---------------------*/
 
+/*****************************************************************************************/
+--
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE FUNCTION [SFX].[ExisteUsuario]
+(
+	
+	@Usuario VARCHAR(255), 
+	@password VARCHAR(255)
+)
+RETURNS int
+AS
+BEGIN
+
+	DECLARE @Result int
+
+	SELECT @Result = COUNT(1) 
+	FROM [SFX].[t_usuarios]
+	WHERE Usu_Username = @Usuario
+	AND   Usu_Password =  HASHBYTES('SHA2_256', @password);
+
+	RETURN @Result
+
+END
+
+GO
+
+/*****************************************************************************************/
+--
+CREATE PROCEDURE [SFX].[GetCiudades] 
+
+	
+AS
+BEGIN
+	SELECT C.*
+	FROM [SFX].[t_ciudades_aeropuertos] C
+	WHERE c.Cia_Fecha_Baja IS NOT NULL
+END
+GO
+
+CREATE PROCEDURE [SFX].[InsertarCiudad] 
+
+	 @CiudadNombre nvarchar(255)
+	
+AS
+BEGIN TRY
+
+	BEGIN TRAN;
+
+	INSERT INTO [SFX].[t_ciudades_aeropuertos] VALUES (@CiudadNombre,NULL);
+
+	COMMIT;
+
+END TRY
+
+BEGIN CATCH
+	
+	ROLLBACK
+
+	RAISERROR ('Error al dar de alta la ciudad.',16,1)
+
+END CATCH
+GO
+/*****************************************************************************************/
+--
+CREATE PROCEDURE [SFX].[ModificarCiudad] 
+
+	@ID				int,
+	@CiudadNombre	nvarchar(255)
+	
+AS
+BEGIN TRY
+
+	BEGIN TRAN;
+
+	UPDATE [SFX].[t_ciudades_aeropuertos] 
+	   SET Cia_Descripcion = @CiudadNombre
+	 WHERE Cia_ID = @ID;
+
+	COMMIT;
+
+END TRY
+
+BEGIN CATCH
+	
+	ROLLBACK
+
+	RAISERROR ('Error al modificar la ciudad.',16,1)
+
+END CATCH
+GO
+
+/*****************************************************************************************/
+--
+CREATE PROCEDURE [SFX].[BajaCiudad] 
+
+	@ID				int
+	
+AS
+BEGIN TRY
+
+	BEGIN TRAN;
+
+	UPDATE [SFX].[t_ciudades_aeropuertos] 
+	   SET Cia_Fecha_Baja = getdate()
+	 WHERE Cia_ID = @ID;
+
+	COMMIT;
+
+END TRY
+
+BEGIN CATCH
+	
+	ROLLBACK
+
+	RAISERROR ('Error al dar de baja la ciudad.',16,1)
+
+END CATCH
+GO
+/*****************************************************************************************/
+--
+/*****************************************************************************************/
+--
+/*****************************************************************************************/
+--
+/*****************************************************************************************/
+--
+/*****************************************************************************************/
+--
