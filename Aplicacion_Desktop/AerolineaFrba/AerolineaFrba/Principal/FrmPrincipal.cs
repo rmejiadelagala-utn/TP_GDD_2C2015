@@ -99,7 +99,8 @@ namespace AerolineaFrba.Principal
 
         private void bajaAeronaveMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmBajaAeronave avion2baja = new FrmBajaAeronave();
+            avion2baja.Show();
         }
 
         private void modificacionAeronaveMenuItem_Click(object sender, EventArgs e)
@@ -109,7 +110,8 @@ namespace AerolineaFrba.Principal
 
         private void listadoAeronaveMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmListadoAeronave avionListar = new FrmListadoAeronave();
+            avionListar.Show();
         }
     }
 }

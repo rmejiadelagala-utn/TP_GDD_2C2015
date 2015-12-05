@@ -14,6 +14,12 @@ IF OBJECT_ID('SFX.GetViajesDisponibles') IS NOT NULL
 DROP PROCEDURE SFX.GetViajesDisponibles
 IF OBJECT_ID('SFX.KgDisponibles') IS NOT NULL
 DROP FUNCTION SFX.KgDisponibles
+IF OBJECT_ID('SFX.BuscarAeronave') IS NOT NULL
+DROP PROCEDURE SFX.BuscarAeronave
+IF OBJECT_ID('SFX.BajaAeronave') IS NOT NULL
+DROP PROCEDURE SFX.BajaAeronave
+IF OBJECT_ID('SFX.InsertarAeronave') IS NOT NULL
+DROP PROCEDURE SFX.InsertarAeronave
 
 
 /****** Object:  UserDefinedFunction [sfx].[ExisteUsuario]    Script Date: 07/11/2015 10:39:20 a.m. ******/
@@ -205,3 +211,75 @@ BEGIN
 END;
 
 GO
+
+--Para uso en ABM aeronaves en los listado de busquedas.
+
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [SFX].[BuscarAeronave]  
+	-- Add the parameters for the stored procedure here
+	@Matricula nvarchar(255), 
+	@Fabricante nvarchar(255),
+	@Modelo nvarchar(255)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF(@Fabricante ='' OR @Modelo ='') 	 
+		BEGIN
+		SELECT a.Aer_ID, a.Aer_Matricula, m.Mod_Nombre, f.Fab_Nombre, s.Ser_Descripcion 
+		FROM [SFX].[t_aeronaves] a, [SFX].[t_modelos] m, [SFX].[t_fabricantes] f, [SFX].[t_servicios] s
+		WHERE a.Aer_Matricula like  '%'+@Matricula+'%'
+		AND a.Aer_Mod_ID=m.Mod_ID
+		and m.Mod_Fab_ID=f.Fab_ID
+		and a.Aer_Ser_ID=s.Ser_ID
+		and a.Aer_Fecha_Baja_Definitiva is null
+		END
+	ELSE
+		BEGIN 
+		SELECT a.Aer_ID, a.Aer_Matricula, m.Mod_Nombre, f.Fab_Nombre, s.Ser_Descripcion 
+		FROM [SFX].[t_aeronaves] a, [SFX].[t_modelos] m, [SFX].[t_fabricantes] f, [SFX].[t_servicios] s
+		WHERE a.Aer_Matricula like  '%'+@Matricula+'%'
+		AND a.Aer_Mod_ID=m.Mod_ID
+		and m.Mod_Fab_ID=f.Fab_ID
+		and a.Aer_Ser_ID=s.Ser_ID
+		and a.Aer_Fecha_Baja_Definitiva is null
+		and f.Fab_ID= @Fabricante
+		and m.Mod_ID = @Modelo;
+		END
+
+END
+GO
+
+
+CREATE PROCEDURE [SFX].[BajaAeronave] 
+
+	@ID				int
+	
+AS
+BEGIN TRY
+
+	BEGIN TRAN;
+
+	UPDATE [SFX].[t_aeronaves] 
+	   SET Aer_Fecha_Baja_Definitiva = getdate()
+	 WHERE Aer_ID = @ID;
+
+	COMMIT;
+
+END TRY
+
+BEGIN CATCH
+	
+	ROLLBACK
+
+	PRINT ERROR_MESSAGE();
+
+END CATCH

@@ -66,11 +66,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Aeronave\Form1.cs">
+    <Compile Include="Abm Aeronave\FrmBajaAeronave.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Aeronave\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Aeronave\FrmBajaAeronave.Designer.cs">
+      <DependentUpon>FrmBajaAeronave.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Aeronave\FrmAltaAeronave.cs">
       <SubType>Form</SubType>
@@ -213,8 +213,8 @@
     <Compile Include="Template\FrmListadoTemplate.Designer.cs">
       <DependentUpon>FrmListadoTemplate.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Abm Aeronave\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Aeronave\FrmBajaAeronave.resx">
+      <DependentUpon>FrmBajaAeronave.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Aeronave\FrmAltaAeronave.resx">
       <DependentUpon>FrmAltaAeronave.cs</DependentUpon>
