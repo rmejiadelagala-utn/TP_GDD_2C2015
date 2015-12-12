@@ -17,6 +17,7 @@ namespace AerolineaFrba.Login
         public FrmLogin()
         {
             InitializeComponent();
+            txtUsuario.Focus();
         }
 
         private void cmdRegistrarse_Click(object sender, EventArgs e)

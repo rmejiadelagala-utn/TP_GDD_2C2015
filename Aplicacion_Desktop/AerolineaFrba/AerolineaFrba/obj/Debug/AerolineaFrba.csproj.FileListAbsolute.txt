@@ -68,3 +68,5 @@ C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmBajaCiudad.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Ciudad.FrmAltaModifCiudad.resources
 C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmBajaAeronave.resources
+C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmModificacionAeronave.resources
+C:\Users\rmejia\Documents\GitHub\TP_GDD_2C2015\Aplicacion_Desktop\AerolineaFrba\AerolineaFrba\obj\Debug\AerolineaFrba.Abm_Aeronave.FrmAltaModifAeronave.resources

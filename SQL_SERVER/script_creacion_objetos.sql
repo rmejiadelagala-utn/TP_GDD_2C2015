@@ -20,6 +20,8 @@ IF OBJECT_ID('SFX.BajaAeronave') IS NOT NULL
 DROP PROCEDURE SFX.BajaAeronave
 IF OBJECT_ID('SFX.InsertarAeronave') IS NOT NULL
 DROP PROCEDURE SFX.InsertarAeronave
+IF OBJECT_ID('SFX.BuscarCiudad') IS NOT NULL
+DROP PROCEDURE SFX.BuscarCiudad
 
 
 /****** Object:  UserDefinedFunction [sfx].[ExisteUsuario]    Script Date: 07/11/2015 10:39:20 a.m. ******/
@@ -283,3 +285,14 @@ BEGIN CATCH
 	PRINT ERROR_MESSAGE();
 
 END CATCH
+
+GO
+
+CREATE PROCEDURE [SFX].[BuscarCiudad] 
+	-- Add the parameters for the stored procedure here
+	 @CiudadNombre nvarchar(255)
+AS
+BEGIN
+	
+	SELECT * FROM SFX.t_ciudades_aeropuertos where Cia_Descripcion Like '%'+@CiudadNombre+'%';
+END

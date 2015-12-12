@@ -105,7 +105,8 @@ namespace AerolineaFrba.Principal
 
         private void modificacionAeronaveMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmModificacionAeronave avionModif = new FrmModificacionAeronave();
+            avionModif.Show();
         }
 
         private void listadoAeronaveMenuItem_Click(object sender, EventArgs e)

@@ -78,6 +78,26 @@ namespace AerolineaFrba
             return _dataSet.Tables[0];
         }
 
+
+        public SqlDataReader EjecutarDataReader(String query)
+        {
+            cmd.CommandText = query;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = cn;
+                MessageBox.Show("El query recibido es: " + query);
+                SqlDataReader dataReader = cmd.ExecuteReader();//new SqlDataReader();
+                if (dataReader.Read() == true)
+                {
+                    return dataReader;
+                }
+                else
+                {
+                    MessageBox.Show("No hay datos para traer ");
+                    return null;
+                }
+            
+        }
+
         public void LoadDataGridView(DataGridView dgv)
         {
             try
